@@ -4,7 +4,7 @@ import com.alexetnico.rxvscoroutines.model.BreweryResult
 import io.reactivex.Single
 import retrofit2.http.GET
 
-interface BreweryApiService {
+interface BreweryService {
     @GET("toBeModified")
     fun beers(): Single<BreweryResult>
 }
