@@ -10,7 +10,7 @@ import com.alexetnico.rxvscoroutines.utils.viewModel
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by lazy {
-        viewModel { MainViewModel() }
+        viewModel { MainViewModel(getString(R.string.brewery_api_key)) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

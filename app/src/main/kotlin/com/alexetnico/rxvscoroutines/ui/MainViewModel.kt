@@ -11,7 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val key: String) : ViewModel() {
     private val coroutinesService by lazy {
         BreweryApiServiceFactory.createCoroutinesService()
     }
@@ -34,7 +34,7 @@ class MainViewModel : ViewModel() {
     private fun getBeers() {
         val breweryResult = runBlocking(coroutineContext, block = {
             async {
-                coroutinesService.beers("3bf68d8eb96cbe15ce31cfd493d981c1").await()
+                coroutinesService.beers(key).await()
             }.await()
         })
 
