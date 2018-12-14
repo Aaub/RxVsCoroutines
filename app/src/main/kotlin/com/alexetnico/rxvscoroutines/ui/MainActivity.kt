@@ -1,7 +1,9 @@
 package com.alexetnico.rxvscoroutines.ui
 
-import android.support.v7.app.AppCompatActivity
+import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.alexetnico.rxvscoroutines.R
 import com.alexetnico.rxvscoroutines.utils.viewModel
 
@@ -18,6 +20,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-
+        viewModel.beers.observe(this, Observer {
+            it?.let {
+                Log.d("BEER", "$it")
+            }
+        })
     }
 }

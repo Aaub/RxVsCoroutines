@@ -19,11 +19,6 @@ inline fun <reified T : ViewModel> AppCompatActivity.viewModel(crossinline facto
         .get(T::class.java)
 }
 
-
-fun Collection<String>.toJokeString(): String =
-    StringBuilder().apply { this@toJokeString.forEach { append("$it\n\n") } }.toString()
-
-
 fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
 

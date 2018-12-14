@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object BreweryApiServiceFactory {
     fun createService(): BreweryService = Retrofit.Builder()
-            .baseUrl("https://api.brewerydb.com/v2/")
+            .baseUrl("https://sandbox-api.brewerydb.com/v2/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()

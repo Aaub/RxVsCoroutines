@@ -6,6 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface BreweryService {
-    @GET("/beers?")
+    @GET("beers?")
     fun beers(@Query("key") key: String): Deferred<BreweryResult>
 }

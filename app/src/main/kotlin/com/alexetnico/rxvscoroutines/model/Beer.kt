@@ -11,7 +11,7 @@ data class Beer(
     val styleId: Int,
     val isOrganic: String,
     val isRetired: String,
-    val labels: List<Label>,
+    val labels: Label,
     val status: String,
     val statusDisplay: String,
     val createdDate: String,
