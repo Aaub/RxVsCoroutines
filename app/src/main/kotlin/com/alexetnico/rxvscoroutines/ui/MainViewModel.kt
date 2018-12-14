@@ -4,9 +4,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
+import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
 import com.alexetnico.rxvscoroutines.utils.Beers
-import io.reactivex.rxkotlin.subscribeBy
+import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -22,17 +23,18 @@ class MainViewModel(private val key: String) : ViewModel() {
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     }
 
-    private val _beers = MutableLiveData<Beers>()
-    private val _beersRx = MutableLiveData<Beers>()
+    private val _beersCo = MutableLiveData<Beers>()
+    val beersCo: LiveData<Beers> = _beersCo
 
-    val beers: LiveData<Beers> = _beers
+    private val _beersRx = MutableLiveData<Beers>()
     val beersRx: LiveData<Beers> = _beersRx
 
-    init {
-        getBeersCo()
-        getBeersRx()
-    }
+    private val _beerRx = MutableLiveData<Beer>()
+    val beerRx: LiveData<Beer> = _beerRx
 
+    init {
+        randomBeerRx()
+    }
 
     private fun getBeersCo() {
         val breweryResult = runBlocking(coroutineContext, block = {
@@ -41,14 +43,24 @@ class MainViewModel(private val key: String) : ViewModel() {
             }.await()
         })
 
-        _beers.postValue(breweryResult.data)
+        _beersCo.postValue(breweryResult.data)
     }
 
     private fun getBeersRx() = rxService
         .beers(key)
         .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
         .subscribeBy(
             onSuccess = { _beersRx.postValue(it.data) },
+            onError = { Log.e("MainViewModel", it.message) }
+        )
+
+    private fun randomBeerRx() = rxService
+        .randomBeer(key)
+        .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+        .subscribeBy(
+            onSuccess = { _beerRx.postValue(it) },
             onError = { Log.e("MainViewModel", it.message) }
         )
 

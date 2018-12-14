@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
 
-        viewModel.beers.observe(this, Observer {
+        viewModel.beersCo.observe(this, Observer {
             it?.let {
                 Log.d("BEER", "$it")
             }
@@ -31,6 +31,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.beersRx.observe(this, Observer {
             it?.let {
                 toast(it.first().name)
+            }
+        })
+
+        viewModel.beerRx.observe(this, Observer {
+            it?.let {
+                toast(it.name)
             }
         })
     }
