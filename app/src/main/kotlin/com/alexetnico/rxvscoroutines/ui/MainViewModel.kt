@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
+import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.Beers
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -16,8 +17,8 @@ import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 class MainViewModel(private val key: String) : ViewModel() {
+    private val beerUseCase = BeerUseCase(key)
     private val coroutinesService by lazy { BreweryApiServiceFactory.createCoroutinesService() }
-    private val rxService by lazy { BreweryApiServiceFactory.createRxService() }
 
     private val coroutineContext: ExecutorCoroutineDispatcher by lazy {
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
@@ -43,20 +44,20 @@ class MainViewModel(private val key: String) : ViewModel() {
             }.await()
         })
 
-        _beersCo.postValue(breweryResult.data)
+        _beersCo.postValue(breweryResult.beers)
     }
 
-    private fun getBeersRx() = rxService
-        .beers(key)
+    private fun getBeersRx() = beerUseCase
+        .beers()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .subscribeBy(
-            onSuccess = { _beersRx.postValue(it.data) },
+            onSuccess = { _beersRx.postValue(it) },
             onError = { Log.e("MainViewModel", it.message) }
         )
 
-    private fun randomBeerRx() = rxService
-        .randomBeer(key)
+    private fun randomBeerRx() = beerUseCase
+        .randomBeer()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .subscribeBy(
