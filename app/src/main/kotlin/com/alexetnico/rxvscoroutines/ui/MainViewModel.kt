@@ -5,27 +5,22 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
-import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
-import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
+import com.alexetnico.rxvscoroutines.usecase.GetBeer
+import com.alexetnico.rxvscoroutines.usecase.GetBeers
 import com.alexetnico.rxvscoroutines.utils.Beers
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
 
 class MainViewModel(private val key: String) : ViewModel() {
-    private val beerUseCase = BeerUseCase(key)
-    private val coroutinesService by lazy { BreweryApiServiceFactory.createCoroutinesService() }
-
-    private val coroutineContext: ExecutorCoroutineDispatcher by lazy {
-        Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-    }
+    private val ucGetBeer = GetBeer(key)
+    private val ucGetBeers = GetBeers(key)
 
     private val _beersCo = MutableLiveData<Beers>()
     val beersCo: LiveData<Beers> = _beersCo
+
+    private val _beerCo = MutableLiveData<Beer>()
+    val beerCo: LiveData<Beer> = _beerCo
+
 
     private val _beersRx = MutableLiveData<Beers>()
     val beersRx: LiveData<Beers> = _beersRx
@@ -35,20 +30,22 @@ class MainViewModel(private val key: String) : ViewModel() {
 
     init {
         randomBeerRx()
+        randomBeerCo()
     }
+
 
     private fun getBeersCo() {
-        val breweryResult = runBlocking(coroutineContext, block = {
-            async {
-                coroutinesService.beers(key).await()
-            }.await()
-        })
-
-        _beersCo.postValue(breweryResult.beers)
+        val test = ucGetBeers.beersCo()
+        _beersCo.postValue(test)
     }
 
-    private fun getBeersRx() = beerUseCase
-        .beers()
+
+    private fun randomBeerCo() {
+        _beerCo.postValue(ucGetBeer.randomBeerCo())
+    }
+
+    private fun getBeersRx() = ucGetBeers
+        .beersRx()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .subscribeBy(
@@ -56,8 +53,8 @@ class MainViewModel(private val key: String) : ViewModel() {
             onError = { Log.e("MainViewModel", it.message) }
         )
 
-    private fun randomBeerRx() = beerUseCase
-        .randomBeer()
+    private fun randomBeerRx() = ucGetBeer
+        .randomBeerRx()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .subscribeBy(

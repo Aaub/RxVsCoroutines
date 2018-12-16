@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface BreweryService {
-    @GET("beers?")
+    @GET("beersRx?")
     fun beers(@Query("key") key: String): Single<BreweryResult>
 
     @GET("beer/random?")
