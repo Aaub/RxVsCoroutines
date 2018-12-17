@@ -1,5 +1,6 @@
 package com.alexetnico.rxvscoroutines.model
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Beer(
@@ -7,5 +8,5 @@ data class Beer(
     val name: String,
     val abv: String,
     val glasswareId: Int,
-    val labels: List<Label>?
+    @SerializedName("labels") val label: Label?
 ) : Serializable

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.usecase.GetBeer
+import com.alexetnico.rxvscoroutines.usecase.GetBeerImage
 import com.alexetnico.rxvscoroutines.usecase.GetBeers
 import com.alexetnico.rxvscoroutines.utils.Beers
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
@@ -21,6 +22,9 @@ class MainViewModel(private val key: String) : ViewModel() {
     private val _beerCo = MutableLiveData<Beer>()
     val beerCo: LiveData<Beer> = _beerCo
 
+    private val _beerImageCo = MutableLiveData<String>()
+    val beerImageCo: LiveData<String> = _beerImageCo
+
 
     private val _beersRx = MutableLiveData<Beers>()
     val beersRx: LiveData<Beers> = _beersRx
@@ -30,18 +34,31 @@ class MainViewModel(private val key: String) : ViewModel() {
 
     init {
         randomBeerRx()
-        randomBeerCo()
+        beerWithImage()
     }
 
 
     private fun getBeersCo() {
-        val test = ucGetBeers.beersCo()
-        _beersCo.postValue(test)
+        _beersCo.postValue(
+            ucGetBeers.beersCo()
+        )
     }
 
 
     private fun randomBeerCo() {
         _beerCo.postValue(ucGetBeer.randomBeerCo())
+    }
+
+    private fun beerWithImage() {
+        val test = ucGetBeer.randomBeerCo()
+
+        val test2 = ucGetBeer.randomBeerCo()?.let {
+            it.copy(
+                label = GetBeerImage(it.id, key).beerImageUrl()
+            )
+        }
+        _beerCo.postValue(test2)
+
     }
 
     private fun getBeersRx() = ucGetBeers

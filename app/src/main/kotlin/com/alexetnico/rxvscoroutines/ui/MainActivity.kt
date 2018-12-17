@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             name = beer.name,
             abv = beer.abv,
             ingredients = null,
-            image_url = beer.labels?.first()?.icon
+            image_url = beer.label?.icon
         )
     )
 }
