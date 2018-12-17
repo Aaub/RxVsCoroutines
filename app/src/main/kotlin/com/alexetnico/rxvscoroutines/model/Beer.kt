@@ -6,7 +6,7 @@ import java.io.Serializable
 data class Beer(
     val id: String,
     val name: String,
-    val abv: String,
+    val abv: String?,
     val glasswareId: Int,
     @SerializedName("labels") val image: Image?
 ) : Serializable
