@@ -8,5 +8,5 @@ data class Beer(
     val name: String,
     val abv: String,
     val glasswareId: Int,
-    @SerializedName("labels") val label: Label?
+    @SerializedName("labels") val image: Image?
 ) : Serializable

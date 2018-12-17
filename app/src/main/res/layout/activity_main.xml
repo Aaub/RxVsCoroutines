@@ -12,14 +12,14 @@
             android:layout_height="wrap_content"
             tools:context=".ui.MainActivity">
 
-        <com.alexetnico.rxvscoroutines.ui.customview.BeerCard
+        <com.alexetnico.rxvscoroutines.ui.customview.BeerView
                 android:id="@+id/random_beer_rx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-        <com.alexetnico.rxvscoroutines.ui.customview.BeerCard
+        <com.alexetnico.rxvscoroutines.ui.customview.BeerView
                 android:id="@+id/random_beer_co"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -5,78 +5,64 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
-import com.alexetnico.rxvscoroutines.usecase.GetBeer
-import com.alexetnico.rxvscoroutines.usecase.GetBeerImage
-import com.alexetnico.rxvscoroutines.usecase.GetBeers
-import com.alexetnico.rxvscoroutines.utils.Beers
+import com.alexetnico.rxvscoroutines.ui.customview.BeerView
+import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(private val key: String) : ViewModel() {
-    private val ucGetBeer = GetBeer(key)
-    private val ucGetBeers = GetBeers(key)
+    private val beerUseCase = BeerUseCase(key)
 
-    private val _beersCo = MutableLiveData<Beers>()
-    val beersCo: LiveData<Beers> = _beersCo
-
-    private val _beerCo = MutableLiveData<Beer>()
-    val beerCo: LiveData<Beer> = _beerCo
+    private val _beerCo = MutableLiveData<BeerView.Model>()
+    val beerCo: LiveData<BeerView.Model> = _beerCo
 
     private val _beerImageCo = MutableLiveData<String>()
     val beerImageCo: LiveData<String> = _beerImageCo
 
+    private val _beerRx = MutableLiveData<BeerView.Model>()
+    val beerRx: LiveData<BeerView.Model> = _beerRx
 
-    private val _beersRx = MutableLiveData<Beers>()
-    val beersRx: LiveData<Beers> = _beersRx
 
-    private val _beerRx = MutableLiveData<Beer>()
-    val beerRx: LiveData<Beer> = _beerRx
-
-    init {
+    fun fetchRandomBeer() {
         randomBeerRx()
-        beerWithImage()
+        randomBeerCo()
     }
 
-
-    private fun getBeersCo() {
-        _beersCo.postValue(
-            ucGetBeers.beersCo()
-        )
-    }
-
+    /** Random **/
 
     private fun randomBeerCo() {
-        _beerCo.postValue(ucGetBeer.randomBeerCo())
+        _beerCo.postValue(beerUseCase.randomCo()?.toBeerViewModel())
     }
 
-    private fun beerWithImage() {
-        val test = ucGetBeer.randomBeerCo()
-
-        val test2 = ucGetBeer.randomBeerCo()?.let {
-            it.copy(
-                label = GetBeerImage(it.id, key).beerImageUrl()
-            )
-        }
-        _beerCo.postValue(test2)
-
-    }
-
-    private fun getBeersRx() = ucGetBeers
-        .beersRx()
+    private fun randomBeerRx() = beerUseCase
+        .randomRx()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .subscribeBy(
-            onSuccess = { _beersRx.postValue(it) },
+            onSuccess = { _beerRx.postValue(it.toBeerViewModel()) },
             onError = { Log.e("MainViewModel", it.message) }
         )
 
-    private fun randomBeerRx() = ucGetBeer
-        .randomBeerRx()
-        .subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.io())
-        .subscribeBy(
-            onSuccess = { _beerRx.postValue(it) },
-            onError = { Log.e("MainViewModel", it.message) }
-        )
+
+    /** Beer with image **/
+
+
+//    private fun beerWithImage() {
+//
+//        val test2 = beerUseCase.randomCo().let {
+//            it.copy(
+//                image = GetBeerImage(it.id, key).beerImageUrl()
+//            )
+//        }
+//        _beerCo.postValue(test2)
+//
+//    }
+
+
+    private fun Beer.toBeerViewModel() = BeerView.Model(
+        name = name,
+        abv = abv,
+        image_url = image?.url
+    )
 
 }

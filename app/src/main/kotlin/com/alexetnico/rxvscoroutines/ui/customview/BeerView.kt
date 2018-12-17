@@ -8,15 +8,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.beer_card.view.*
 
-class BeerCard @JvmOverloads constructor(
+class BeerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
-    data class Beer(
+    data class Model(
         val name: String,
         val abv: String,
-        val ingredients: String?,
         val image_url: String?
     )
 
@@ -24,11 +23,10 @@ class BeerCard @JvmOverloads constructor(
         inflate(context, R.layout.beer_card, this)
     }
 
-    fun setupView(beer: Beer) = with(beer) {
+    fun setupView(model: Model) = with(model) {
 
         beer_label.text = name
         beer_abv.text = abv
-        beer_ingredients.text = ingredients
         when (image_url.isNullOrBlank()) {
             true -> beer_image.setImageDrawable(resources.getDrawable(R.drawable.default_success_beer, null))
             false -> Glide.with(context)
@@ -37,11 +35,10 @@ class BeerCard @JvmOverloads constructor(
                     RequestOptions()
                         .centerCrop()
                         .circleCrop()
-
                 )
                 .into(beer_image)
         }
-
-
     }
+
+
 }

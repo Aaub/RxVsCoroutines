@@ -10,17 +10,18 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
-class GetBeer(val key: String) {
+class BeerUseCase(val key: String) {
     private val rxService by lazy { BreweryApiServiceFactory.createRxService() }
 
     private val coroutinesService by lazy { BreweryApiServiceFactory.createCoroutinesService() }
 
-
-    private val coroutineContext: ExecutorCoroutineDispatcher by lazy {
+    val coroutineContext: ExecutorCoroutineDispatcher by lazy {
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     }
 
-    fun randomBeerCo(): Beer? = runBlocking(coroutineContext, block = {
+    /** Random **/
+
+    fun randomCo(): Beer? = runBlocking(coroutineContext, block = {
         try {
             async {
                 coroutinesService.randomBeer(key).await()
@@ -32,7 +33,22 @@ class GetBeer(val key: String) {
 
     })
 
-    fun randomBeerRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
+    fun randomRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
+
+
+    /** Beer with image **/
+
+//    fun beerWithImageCo(beerId : String): Beer? = runBlocking(coroutineContext, block = {
+//        try {
+//            async {
+//                coroutinesService.beerImage(beerId, key).await().beer.image
+//            }.await()
+//        } catch (e: Exception) {
+//            Log.e("MainViewModel", e.message)
+//            null
+//        }
+//
+//    })
 
 
 }
