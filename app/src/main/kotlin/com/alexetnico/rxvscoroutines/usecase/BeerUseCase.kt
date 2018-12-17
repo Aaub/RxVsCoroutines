@@ -1,13 +1,9 @@
 package com.alexetnico.rxvscoroutines.usecase
 
-import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
 import io.reactivex.Single
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.util.concurrent.Executors
 
 class BeerUseCase(val key: String) {
@@ -21,34 +17,26 @@ class BeerUseCase(val key: String) {
 
     /** Random **/
 
-    fun randomCo(): Beer? = runBlocking(coroutineContext, block = {
-        try {
-            async {
-                coroutinesService.randomBeer(key).await()
-            }.await().beer
-        } catch (e: Exception) {
-            Log.e("MainViewModel", e.message)
-            null
+    suspend fun randomCo(): Deferred<Beer?> =
+
+        GlobalScope.async(Dispatchers.Main) {
+            coroutinesService.randomBeer(key).await().beer
+
         }
 
-    })
+
 
     fun randomRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
 
 
     /** Beer with image **/
 
-//    fun beerWithImageCo(beerId : String): Beer? = runBlocking(coroutineContext, block = {
-//        try {
-//            async {
-//                coroutinesService.beerImage(beerId, key).await().beer.image
-//            }.await()
-//        } catch (e: Exception) {
-//            Log.e("MainViewModel", e.message)
-//            null
-//        }
-//
-//    })
+    fun beerWithImageCo(): Deferred<Beer?> =
+        GlobalScope.async(coroutineContext) {
+            randomCo().await()?.let {
+                coroutinesService.beerImage(it.id, key).await().beer
+            }
+        }
 
 
 }

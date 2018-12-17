@@ -9,6 +9,9 @@ import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class MainViewModel(private val key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
@@ -24,14 +27,20 @@ class MainViewModel(private val key: String) : ViewModel() {
 
 
     fun fetchRandomBeer() {
+//        randomBeerCo()
         randomBeerRx()
-        randomBeerCo()
+        beerWithImage()
     }
 
     /** Random **/
 
     private fun randomBeerCo() {
-        _beerCo.postValue(beerUseCase.randomCo()?.toBeerViewModel())
+
+        GlobalScope.async(Dispatchers.Default) {
+            _beerCo.postValue(beerUseCase.randomCo().await()?.toBeerViewModel())
+        }
+
+
     }
 
     private fun randomBeerRx() = beerUseCase
@@ -47,16 +56,14 @@ class MainViewModel(private val key: String) : ViewModel() {
     /** Beer with image **/
 
 
-//    private fun beerWithImage() {
-//
-//        val test2 = beerUseCase.randomCo().let {
-//            it.copy(
-//                image = GetBeerImage(it.id, key).beerImageUrl()
-//            )
-//        }
-//        _beerCo.postValue(test2)
-//
-//    }
+    private fun beerWithImage() {
+        GlobalScope.async(Dispatchers.Default) {
+
+            _beerCo.postValue(beerUseCase.beerWithImageCo().await()?.toBeerViewModel())
+        }
+
+
+    }
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
