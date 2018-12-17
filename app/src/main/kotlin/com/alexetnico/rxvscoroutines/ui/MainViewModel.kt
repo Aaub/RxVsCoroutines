@@ -9,12 +9,8 @@ import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.delay
-
 
 class MainViewModel(key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
@@ -34,8 +30,9 @@ class MainViewModel(key: String) : ViewModel() {
 
     fun fetchRandomBeer() {
 //        randomBeerCo()
+        fiveBeers()
         randomBeerRx()
-        beerWithImage()
+//        beerWithImage()
     }
 
     fun fetchRandomBeerTEST() {
@@ -80,8 +77,21 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
 
+
+    private fun beerWithImageRx() = beerUseCase
+        .beerWithImageRx()
+        .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+        .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
+        .subscribeBy(
+            onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
+            onError = { Log.e("MainViewModel", it.message) }
+        )
+
+
     /** Calls in raw **/
 
+    @ObsoleteCoroutinesApi
     private fun fiveBeers() {
         GlobalScope.async(Dispatchers.Default) {
             beerUseCase.fiveBeers().await().consumeEach {
@@ -94,16 +104,6 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
 
-
-    private fun beerWithImageRx() = beerUseCase
-        .beerWithImageRx()
-        .subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.io())
-        .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
-        .subscribeBy(
-            onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
-            onError = { Log.e("MainViewModel", it.message) }
-        )
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
