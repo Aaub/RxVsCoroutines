@@ -12,27 +12,37 @@
             android:layout_height="wrap_content"
             tools:context=".ui.MainActivity">
 
-        <com.alexetnico.rxvscoroutines.ui.customview.BeerView
-                android:id="@+id/random_beer_rx"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-        <com.alexetnico.rxvscoroutines.ui.customview.BeerView
-                android:id="@+id/random_beer_co"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
         <Button
+                android:layout_marginTop="10dp"
                 android:id="@+id/random_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/random_beer"
         />
+
+        <com.alexetnico.rxvscoroutines.ui.customview.BeerView
+                android:layout_marginTop="10dp"
+                android:id="@+id/random_beer_rx"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/random_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/random_beer_co"
+        />
+
+        <com.alexetnico.rxvscoroutines.ui.customview.BeerView
+                android:id="@+id/random_beer_co"
+                android:layout_marginTop="10dp"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/random_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/random_beer_rx"/>
+
 
     </android.support.constraint.ConstraintLayout>
 

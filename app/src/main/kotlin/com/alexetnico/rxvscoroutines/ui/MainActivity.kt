@@ -23,15 +23,11 @@ class MainActivity : AppCompatActivity() {
     private fun observeViewModel() {
 
         viewModel.beerCo.observe(this, Observer {
-            it?.let {
-                random_beer_co.setupView(it)
-            }
+            it?.let { random_beer_co.setupView(it) }
         })
 
         viewModel.beerRx.observe(this, Observer {
-            it?.let {
-                random_beer_rx.setupView(it)
-            }
+            it?.let { random_beer_rx.setupView(it) }
         })
     }
 

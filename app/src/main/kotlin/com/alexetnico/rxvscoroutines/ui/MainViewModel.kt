@@ -7,6 +7,7 @@ import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
+import com.alexetnico.rxvscoroutines.utils.EMPTY
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.delay
 
-class MainViewModel(private val key: String) : ViewModel() {
+class MainViewModel(key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
 
     private val _beerCo = MutableLiveData<BeerView.Model>()
@@ -50,6 +51,7 @@ class MainViewModel(private val key: String) : ViewModel() {
         .randomRx()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
+        .doOnSubscribe { _beerRx.postValue(BeerView.Model(isLoading = true)) }
         .subscribeBy(
             onSuccess = { _beerRx.postValue(it.toBeerViewModel()) },
             onError = { Log.e("MainViewModel", it.message) }
@@ -85,8 +87,7 @@ class MainViewModel(private val key: String) : ViewModel() {
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
         name = name,
-        abv = abv ?: "No abv founded",
+        abv = abv ?: EMPTY,
         image_url = image?.url
     )
-
 }
