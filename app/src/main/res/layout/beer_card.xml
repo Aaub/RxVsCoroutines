@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       tools:layout_width="match_parent"
+       tools:layout_height="match_parent"
+       tools:parentTag="android.support.v7.widget.CardView">
 
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
         <ImageView
                 android:id="@+id/beer_image"
                 android:layout_height="200dp"
-                android:layout_width="200dp"/>
-
-        <TextView
-                android:id="@+id/beer_abv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_width="200dp"
+                tools:src="@drawable/default_success_beer"/>
 
         <TextView
                 android:id="@+id/beer_label"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:text="Depserados"/>
 
         <TextView
-                android:id="@+id/beer_ingredients"
+                android:id="@+id/beer_abv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:text="4,8"/>
 
     </LinearLayout>
 
 
-</android.support.v7.widget.CardView>
+</merge>
