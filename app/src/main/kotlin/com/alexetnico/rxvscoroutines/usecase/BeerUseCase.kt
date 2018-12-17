@@ -4,6 +4,7 @@ import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
 import io.reactivex.Single
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 import java.util.concurrent.Executors
 
 class BeerUseCase(val key: String) {
@@ -37,6 +38,22 @@ class BeerUseCase(val key: String) {
                 coroutinesService.beerImage(it.id, key).await().beer
             }
         }
+
+
+    /** Calls in raw **/
+
+    fun fiveBeers(): Deferred<Channel<Beer?>> =
+        GlobalScope.async(coroutineContext) {
+            val channel = Channel<Beer?>(5)
+            for (i in 1..5) {
+                channel.send(randomCo().await())
+            }
+            channel
+        }
+
+
+
+
 
 
 }
