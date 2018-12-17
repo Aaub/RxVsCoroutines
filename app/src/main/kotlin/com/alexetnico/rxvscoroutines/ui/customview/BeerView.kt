@@ -24,21 +24,22 @@ class BeerView @JvmOverloads constructor(
     }
 
     fun setupView(model: Model) = with(model) {
-
         beer_label.text = name
         beer_abv.text = abv
-        when (image_url.isNullOrBlank()) {
-            true -> beer_image.setImageDrawable(resources.getDrawable(R.drawable.default_success_beer, null))
-            false -> Glide.with(context)
-                .load(image_url)
-                .apply(
-                    RequestOptions()
-                        .centerCrop()
-                        .circleCrop()
-                )
-                .into(beer_image)
-        }
+        Glide.with(context)
+            .load(image_url ?: DEFAULT_IMG_URL)
+            .apply(
+                RequestOptions()
+                    .centerCrop()
+                    .circleCrop()
+            )
+            .into(beer_image)
     }
 
+
+    companion object {
+        private const val DEFAULT_IMG_URL =
+            "https://i.pinimg.com/originals/86/e4/37/86e437090aae1601525b1e6a8845dae2.jpg"
+    }
 
 }
