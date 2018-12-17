@@ -15,6 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.delay
 
+
 class MainViewModel(key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
 
@@ -32,6 +33,12 @@ class MainViewModel(key: String) : ViewModel() {
 
 
     fun fetchRandomBeer() {
+//        randomBeerCo()
+        randomBeerRx()
+        beerWithImage()
+    }
+
+    fun fetchRandomBeerTEST() {
         randomBeerCo()
         randomBeerRx()
     }
