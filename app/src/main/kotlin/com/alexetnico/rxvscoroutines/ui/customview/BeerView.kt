@@ -21,7 +21,7 @@ class BeerView @JvmOverloads constructor(
     data class Model(
         val name: String = EMPTY,
         val abv: String = EMPTY,
-        val image_url: String? = null,
+        val image_url: String? = EMPTY,
         val isLoading: Boolean = false
     )
 
@@ -36,17 +36,21 @@ class BeerView @JvmOverloads constructor(
         beer_loader.visibility = if (isLoading) VISIBLE else GONE
     }
 
-    private fun ImageView.setupImage(image_url: String?) = image_url?.let {
-        Glide.with(context)
-            .load(image_url)
-            .apply(
-                RequestOptions()
-                    .centerCrop()
-                    .circleCrop()
-            )
-            .into(this)
-        show()
-    } ?: hide()
+    private fun ImageView.setupImage(image_url: String?) {
+        val goodUrl = image_url ?: DEFAULT_IMG_URL
+        if (goodUrl.isEmpty()) hide()
+        else {
+            Glide.with(context)
+                .load(goodUrl)
+                .apply(
+                    RequestOptions()
+                        .centerCrop()
+                        .circleCrop()
+                )
+                .into(this)
+            show()
+        }
+    }
 
     companion object {
         private const val DEFAULT_IMG_URL =
