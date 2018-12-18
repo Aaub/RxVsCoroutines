@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.alexetnico.rxvscoroutines.R
+import com.alexetnico.rxvscoroutines.utils.toBeersString
 import com.alexetnico.rxvscoroutines.utils.viewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -37,12 +38,16 @@ class MainActivity : AppCompatActivity() {
         viewModel.beerImageRx.observe(this, Observer {
             it?.let { beer_with_image_rx.setupView(it) }
         })
+
+        viewModel.beersRx.observe(this, Observer {
+            it?.let { random_beers_rx.text = it.toBeersString() }
+        })
     }
 
     private fun setupListeners() {
         random_button.setOnClickListener { viewModel.fetchRandomBeer() }
-        beer_with_image_button.setOnClickListener { viewModel.fetchBeerImage() }
-
+        beer_with_image_btn.setOnClickListener { viewModel.fetchBeerImage() }
+        random_beers_btn.setOnClickListener { viewModel.fetchRandomBeers() }
     }
 
 

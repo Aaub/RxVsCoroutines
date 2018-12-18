@@ -21,6 +21,9 @@ inline fun <reified T : ViewModel> AppCompatActivity.viewModel(crossinline facto
 
 fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
+fun Collection<String>.toBeersString(): String =
+        StringBuilder().apply { this@toBeersString.forEach { append("$it\n\n") } }.toString()
+
 
 fun View.hide() {
     visibility = GONE

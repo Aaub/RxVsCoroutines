@@ -2,6 +2,7 @@ package com.alexetnico.rxvscoroutines.usecase
 
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
+import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -23,7 +24,7 @@ class BeerUseCase(val key: String) {
         coroutinesService.randomBeer(key).await().beer
     }
 
-    fun randomRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
+    fun randomBeerRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
 
 
     /*********** Beer with image ***********/
@@ -35,7 +36,7 @@ class BeerUseCase(val key: String) {
             }
         }
 
-    fun beerWithImageRx(): Single<Beer> = randomRx()
+    fun beerWithImageRx(): Single<Beer> = randomBeerRx()
         .flatMap { rxService.beerImage(it.id, key) }
         .map { it.beer }
 
@@ -50,4 +51,8 @@ class BeerUseCase(val key: String) {
             }
             channel
         }
+
+    fun randomBeersRx(quantity: Long): Observable<Beer> = randomBeerRx()
+        .toObservable()
+        .repeat(quantity)
 }
