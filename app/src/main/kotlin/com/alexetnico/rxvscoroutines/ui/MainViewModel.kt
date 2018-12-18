@@ -12,14 +12,15 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 
+
 class MainViewModel(key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
 
     private val _beerCo = MutableLiveData<BeerView.Model>()
     val beerCo: LiveData<BeerView.Model> = _beerCo
 
-    private val _beerImageCo = MutableLiveData<String>()
-    val beerImageCo: LiveData<String> = _beerImageCo
+    private val _beerImageCo = MutableLiveData<BeerView.Model>()
+    val beerImageCo: LiveData<BeerView.Model> = _beerImageCo
 
     private val _beerRx = MutableLiveData<BeerView.Model>()
     val beerRx: LiveData<BeerView.Model> = _beerRx
@@ -29,19 +30,13 @@ class MainViewModel(key: String) : ViewModel() {
 
 
     fun fetchRandomBeer() {
-//        randomBeerCo()
-        fiveBeers()
-        randomBeerRx()
-//        beerWithImage()
-    }
-
-    fun fetchRandomBeerTEST() {
         randomBeerCo()
         randomBeerRx()
     }
 
     fun fetchBeerImage() {
         beerWithImageRx()
+        beerWithImageCo()
     }
 
     /** Random **/
@@ -68,9 +63,9 @@ class MainViewModel(key: String) : ViewModel() {
 
     /** Beer with image **/
 
-    private fun beerWithImage() {
+    private fun beerWithImageCo() {
         GlobalScope.async(Dispatchers.Default) {
-            _beerCo.postValue(beerUseCase.beerWithImageCo().await()?.toBeerViewModel())
+            _beerImageCo.postValue(beerUseCase.beerWithImageCo().await()?.toBeerViewModel())
         }
 
 

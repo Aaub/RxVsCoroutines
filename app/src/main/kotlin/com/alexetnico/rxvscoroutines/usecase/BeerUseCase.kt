@@ -69,10 +69,4 @@ class BeerUseCase(val key: String) {
             }
             channel
         }
-
-
-
-
-
-
 }
