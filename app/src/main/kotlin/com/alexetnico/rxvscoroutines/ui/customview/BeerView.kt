@@ -41,13 +41,9 @@ class BeerView @JvmOverloads constructor(
         image_url?.let {
             Glide.with(context)
                 .load(image_url)
-                .apply(
-                    RequestOptions()
-                        .centerCrop()
-                        .circleCrop()
-                )
+                .apply(RequestOptions().centerCrop())
                 .into(this)
-        }
+        } ?: setImageResource(R.drawable.ic_android_beer)
     }
 
 }

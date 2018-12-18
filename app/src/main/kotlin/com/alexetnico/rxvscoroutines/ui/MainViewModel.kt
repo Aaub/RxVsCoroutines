@@ -7,7 +7,6 @@ import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
-import com.alexetnico.rxvscoroutines.utils.EMPTY
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
@@ -28,12 +27,17 @@ class MainViewModel(key: String) : ViewModel() {
     private val _beerRx = MutableLiveData<BeerView.Model>()
     val beerRx: LiveData<BeerView.Model> = _beerRx
 
+    private val _beerImageRx = MutableLiveData<BeerView.Model>()
+    val beerImageRx: LiveData<BeerView.Model> = _beerImageRx
+
 
     fun fetchRandomBeer() {
-//        randomBeerCo()
-        fiveBeers()
+        randomBeerCo()
         randomBeerRx()
-//        beerWithImage()
+    }
+
+    fun fetchBeerImage() {
+        beerWithImageRx()
     }
 
     /** Random **/
@@ -83,6 +87,16 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
 
+
+    private fun beerWithImageRx() = beerUseCase
+        .beerWithImageRx()
+        .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+        .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
+        .subscribeBy(
+            onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
+            onError = { Log.e("MainViewModel", it.message) }
+        )
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
