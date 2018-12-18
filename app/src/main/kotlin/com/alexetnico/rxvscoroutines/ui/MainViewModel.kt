@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.alexetnico.rxvscoroutines.model.Beer
+import com.alexetnico.rxvscoroutines.ui.MainViewModel.STATUS.*
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
@@ -14,6 +15,8 @@ import kotlinx.coroutines.channels.consumeEach
 
 class MainViewModel(key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
+
+    enum class STATUS { LOADING, NOT_LOADING }
 
     private val _beerCo = MutableLiveData<BeerView.Model>()
     val beerCo: LiveData<BeerView.Model> = _beerCo
@@ -29,6 +32,9 @@ class MainViewModel(key: String) : ViewModel() {
 
     private val _beersRx = MutableLiveData<Collection<String>>()
     val beersRx: LiveData<Collection<String>> = _beersRx
+
+    private val _beersStatusRx = MutableLiveData<STATUS>()
+    val beersStatusRx: LiveData<STATUS> = _beersStatusRx
 
 
     fun fetchRandomBeer() {
@@ -102,7 +108,11 @@ class MainViewModel(key: String) : ViewModel() {
         .randomBeersRx(QUANTITY.toLong())
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
-        .doOnSubscribe { _beersRx.postValue(emptyList()) }
+        .doOnSubscribe {
+            _beersRx.postValue(emptyList())
+            _beersStatusRx.postValue(LOADING)
+        }
+        .doFinally { _beersStatusRx.postValue(NOT_LOADING) }
         .subscribeBy(
             onNext = { _beersRx.postValue(_beersRx.value?.plus(it.name)) },
             onComplete = { },
