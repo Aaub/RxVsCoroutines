@@ -2,6 +2,7 @@ package com.alexetnico.rxvscoroutines.ui.customview
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
+import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.widget.ImageView
 import com.alexetnico.rxvscoroutines.R
@@ -25,9 +26,8 @@ class BeerView @JvmOverloads constructor(
 
     init {
         inflate(context, R.layout.beer_view, this)
-        resources.getDimensionPixelSize(R.dimen.medium_padding).let {
-            setPadding(it, it, it, it)
-        }
+        resources.getDimensionPixelSize(R.dimen.medium).let { setPadding(it, it, it, it) }
+        background = AppCompatResources.getDrawable(context, R.drawable.card_background)
     }
 
     fun setupView(model: Model) = with(model) {
