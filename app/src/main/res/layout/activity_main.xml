@@ -119,6 +119,7 @@
             android:id="@+id/random_beers_rx"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:minHeight="@dimen/bottom_space"
             android:layout_marginTop="@dimen/margin_double"
             app:layout_constraintEnd_toStartOf="@+id/random_beers_co"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,12 +131,14 @@
             android:id="@+id/random_beers_co"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:minHeight="@dimen/bottom_space"
             android:layout_marginTop="@dimen/margin_double"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/random_beers_rx"
             app:layout_constraintTop_toBottomOf="@+id/random_beers_btn"
             tools:text="Random beers random beers Random beers random beers Random beers random beers"
             />
+        
 
 
     </android.support.constraint.ConstraintLayout>

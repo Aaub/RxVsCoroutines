@@ -3,7 +3,6 @@ package com.alexetnico.rxvscoroutines.ui
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
@@ -63,7 +62,7 @@ class MainViewModel(key: String) : ViewModel() {
         .doOnSubscribe { _beerRx.postValue(BeerView.Model(isLoading = true)) }
         .subscribeBy(
             onSuccess = { _beerRx.postValue(it.toBeerViewModel()) },
-            onError = {  }
+            onError = { }
         )
 
 
@@ -82,7 +81,7 @@ class MainViewModel(key: String) : ViewModel() {
         .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
         .subscribeBy(
             onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
-            onError = {  }
+            onError = { }
         )
 
 
