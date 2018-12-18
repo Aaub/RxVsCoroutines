@@ -16,7 +16,7 @@
         >
 
         <Button
-                android:id="@+id/random_button"
+                android:id="@+id/random_btn"
                 style="@style/Button"
                 android:text="@string/random_beer"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toStartOf="@+id/random_beer_co"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/random_button"
+            app:layout_constraintTop_toBottomOf="@+id/random_btn"
             />
 
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
@@ -41,7 +41,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/random_beer_rx"
-            app:layout_constraintTop_toBottomOf="@+id/random_button"
+            app:layout_constraintTop_toBottomOf="@+id/random_btn"
             />
 
 
@@ -58,7 +58,7 @@
 
 
         <Button
-                android:id="@+id/beer_with_image_button"
+                android:id="@+id/beer_with_image_btn"
                 style="@style/Button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,11 +99,8 @@
 
         <Button
             android:id="@+id/random_beers_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
             android:text="@string/random_beers"
+            style="@style/Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/second_separator"

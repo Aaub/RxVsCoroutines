@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        random_button.setOnClickListener { viewModel.fetchRandomBeer() }
+        random_btn.setOnClickListener { viewModel.fetchRandomBeer() }
         beer_with_image_btn.setOnClickListener { viewModel.fetchBeerImage() }
         random_beers_btn.setOnClickListener { viewModel.fetchRandomBeers() }
     }
