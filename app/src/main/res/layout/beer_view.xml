@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools"
-       tools:layout_width="match_parent"
-       tools:layout_height="match_parent"
-       tools:parentTag="android.support.v7.widget.CardView">
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_width="wrap_content"
+    tools:padding="10dp"
+    tools:parentTag="android.support.constraint.ConstraintLayout"
+    >
 
+    <TextView
+        android:id="@+id/beer_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/beer_image"
+        app:layout_constraintStart_toStartOf="@+id/beer_image"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Depserados"
+        />
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        <ImageView
-                android:id="@+id/beer_image"
-                android:layout_height="150dp"
-                android:layout_width="150dp"
-                tools:src="@drawable/ic_launcher_foreground"
-                tools:ignore="ContentDescription"/>
+    <TextView
+        android:id="@+id/beer_abv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/beer_image"
+        app:layout_constraintStart_toStartOf="@+id/beer_image"
+        app:layout_constraintTop_toBottomOf="@+id/beer_label"
+        tools:text="4,8%"
+        />
 
-        <TextView
-                android:id="@+id/beer_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Depserados"/>
-
-        <TextView
-                android:id="@+id/beer_abv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="4,8"/>
-
-    </LinearLayout>
-
+    <ImageView
+        android:id="@+id/beer_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_android_beer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beer_abv"
+        tools:ignore="ContentDescription"
+        />
 
     <ProgressBar
-            android:layout_width="wrap_content"
-            android:id="@+id/beer_loader"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+        android:id="@+id/beer_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
+        />
 
 </merge>
