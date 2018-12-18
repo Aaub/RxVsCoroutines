@@ -142,6 +142,6 @@ class MainViewModel(key: String) : ViewModel() {
     )
 
     companion object {
-        private const val QUANTITY = 5
+        var QUANTITY: Int = 5
     }
 }

@@ -3,6 +3,9 @@ package com.alexetnico.rxvscoroutines.ui
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import com.alexetnico.rxvscoroutines.R
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         observeViewModel()
         setupListeners()
+        listenEditText()
     }
 
     private fun observeViewModel() {
@@ -69,6 +73,27 @@ class MainActivity : AppCompatActivity() {
         random_btn.setOnClickListener { viewModel.fetchRandomBeer() }
         beer_with_image_btn.setOnClickListener { viewModel.fetchBeerImage() }
         random_beers_btn.setOnClickListener { viewModel.fetchRandomBeers() }
+    }
+
+    private fun listenEditText() {
+        beer_quantity_edit_text.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                try {
+                    MainViewModel.QUANTITY = s?.toString()?.toInt() ?: 0
+                } catch (e: Exception) {
+                    Log.e("MainActivity", "NaN")
+                }
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+        })
     }
 
 

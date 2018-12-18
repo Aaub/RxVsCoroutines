@@ -2,6 +2,7 @@
     <string name="app_name">RxVsCoroutines</string>
     <string name="brewery_api_key">3bf68d8eb96cbe15ce31cfd493d981c1</string>
     <string name="random_beer">RANDOM</string>
+    <string name="beer_quantity_hint">Quantity of random beers wanted</string>
     <string name="beer_with_image">BEER WITH IMAGE</string>
     <string name="random_beers">RANDOM BEERS</string>
 
