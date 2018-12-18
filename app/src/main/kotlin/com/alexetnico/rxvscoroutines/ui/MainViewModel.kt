@@ -10,7 +10,10 @@ import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.EMPTY
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.consumeEach
 import java.util.concurrent.TimeUnit.SECONDS
+
 
 class MainViewModel(key: String) : ViewModel() {
     private val beerUseCase = BeerUseCase(key)
@@ -18,8 +21,8 @@ class MainViewModel(key: String) : ViewModel() {
     private val _beerCo = MutableLiveData<BeerView.Model>()
     val beerCo: LiveData<BeerView.Model> = _beerCo
 
-    private val _beerImageCo = MutableLiveData<String>()
-    val beerImageCo: LiveData<String> = _beerImageCo
+    private val _beerImageCo = MutableLiveData<BeerView.Model>()
+    val beerImageCo: LiveData<BeerView.Model> = _beerImageCo
 
     private val _beerRx = MutableLiveData<BeerView.Model>()
     val beerRx: LiveData<BeerView.Model> = _beerRx
@@ -35,12 +38,18 @@ class MainViewModel(key: String) : ViewModel() {
 
     fun fetchBeerImage() {
         beerWithImageRx()
+        beerWithImageCo()
     }
 
     /** Random **/
 
     private fun randomBeerCo() {
-        _beerCo.postValue(beerUseCase.randomCo()?.toBeerViewModel())
+
+        GlobalScope.async(Dispatchers.Default) {
+            _beerCo.postValue(beerUseCase.randomCo().await()?.toBeerViewModel())
+        }
+
+
     }
 
     private fun randomBeerRx() = beerUseCase
@@ -56,17 +65,14 @@ class MainViewModel(key: String) : ViewModel() {
 
     /** Beer with image **/
 
+    private fun beerWithImageCo() {
+        GlobalScope.async(Dispatchers.Default) {
+            _beerImageCo.postValue(beerUseCase.beerWithImageCo().await()?.toBeerViewModel())
+        }
 
-//    private fun beerWithImage() {
-//
-//        val test2 = beerUseCase.randomCo().let {
-//            it.copy(
-//                image = GetBeerImage(it.id, key).beerImageUrl()
-//            )
-//        }
-//        _beerCo.postValue(test2)
-//
-//    }
+
+    }
+
 
     private fun beerWithImageRx() = beerUseCase
         .beerWithImageRx()
@@ -77,6 +83,21 @@ class MainViewModel(key: String) : ViewModel() {
             onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
             onError = { Log.e("MainViewModel", it.message) }
         )
+
+
+    /** Calls in raw **/
+    @ObsoleteCoroutinesApi
+    private fun fiveBeers() {
+        GlobalScope.async(Dispatchers.Default) {
+            beerUseCase.fiveBeers().await().consumeEach {
+                delay(1000)
+                it?.let {
+                    _beerCo.postValue(it.toBeerViewModel())
+                }
+            }
+        }
+    }
+
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
