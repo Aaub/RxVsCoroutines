@@ -81,9 +81,9 @@ class MainViewModel(key: String) : ViewModel() {
 
     /*********** Calls in raw ***********/
     @ObsoleteCoroutinesApi
-    private fun fiveBeers() {
+    private fun randomBeers() {
         GlobalScope.async(Dispatchers.Default) {
-            beerUseCase.fiveBeers().await().consumeEach {
+            beerUseCase.randomBeers(QUANTITY).await().consumeEach {
                 delay(1000)
                 it?.let {
                     _beerCo.postValue(it.toBeerViewModel())
@@ -98,4 +98,8 @@ class MainViewModel(key: String) : ViewModel() {
         abv = abv ?: "??",
         image_url = image?.url
     )
+
+    companion object {
+        private const val QUANTITY = 5
+    }
 }
