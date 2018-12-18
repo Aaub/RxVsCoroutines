@@ -6,6 +6,7 @@
         tools:layout_width="wrap_content"
         tools:padding="10dp"
         tools:parentTag="android.support.constraint.ConstraintLayout"
+        tools:background="@drawable/card_background"
 >
 
     <TextView
