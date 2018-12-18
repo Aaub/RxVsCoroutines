@@ -87,7 +87,7 @@ class MainViewModel(key: String) : ViewModel() {
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
         name = name,
-        abv = abv ?: EMPTY,
+        abv = abv ?: "??",
         image_url = image?.url
     )
 }
