@@ -29,10 +29,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.beerRx.observe(this, Observer {
             it?.let { random_beer_rx.setupView(it) }
         })
+
+        viewModel.beerImageRx.observe(this, Observer {
+            it?.let { beer_with_image_rx.setupView(it) }
+        })
     }
 
     private fun setupListeners() {
         random_button.setOnClickListener { viewModel.fetchRandomBeer() }
+        beer_with_image_button.setOnClickListener { viewModel.fetchBeerImage() }
     }
 
 
