@@ -1,61 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
 <merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:layout_height="wrap_content"
-    tools:layout_width="wrap_content"
-    tools:padding="10dp"
-    tools:parentTag="android.support.constraint.ConstraintLayout"
-    >
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content"
+        tools:padding="10dp"
+        tools:parentTag="android.support.constraint.ConstraintLayout"
+>
 
     <TextView
-        android:id="@+id/beer_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/beer_image"
-        app:layout_constraintStart_toStartOf="@+id/beer_image"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Depserados"
-        />
+            android:id="@+id/beer_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/beer_image"
+            app:layout_constraintStart_toStartOf="@+id/beer_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Depserados"
+    />
 
     <TextView
-        android:id="@+id/beer_abv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/beer_image"
-        app:layout_constraintStart_toStartOf="@+id/beer_image"
-        app:layout_constraintTop_toBottomOf="@+id/beer_label"
-        tools:text="4,8%"
-        />
+            android:id="@+id/beer_abv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/beer_image"
+            app:layout_constraintStart_toStartOf="@+id/beer_image"
+            app:layout_constraintTop_toBottomOf="@+id/beer_label"
+            tools:text="4,8%"
+    />
 
     <ImageView
-        android:id="@+id/beer_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_android_beer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/beer_abv"
-        tools:ignore="ContentDescription"
-        />
+            android:id="@+id/beer_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_android_beer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/beer_abv"
+            tools:ignore="ContentDescription"
+    />
 
     <ProgressBar
-        android:id="@+id/beer_loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"
-        />
+            android:id="@+id/beer_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible"
+    />
 
 </merge>
