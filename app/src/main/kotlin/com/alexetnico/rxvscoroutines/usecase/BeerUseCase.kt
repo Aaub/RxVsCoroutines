@@ -50,5 +50,8 @@ class BeerUseCase(val key: String) {
 //
 //    })
 
+    fun beerWithImageRx(): Single<Beer> = randomRx()
+        .flatMap { rxService.beerImage(it.id, key) }
+        .map { it.beer }
 
 }

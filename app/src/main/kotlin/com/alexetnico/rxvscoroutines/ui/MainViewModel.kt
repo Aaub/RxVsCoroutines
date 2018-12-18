@@ -24,10 +24,17 @@ class MainViewModel(key: String) : ViewModel() {
     private val _beerRx = MutableLiveData<BeerView.Model>()
     val beerRx: LiveData<BeerView.Model> = _beerRx
 
+    private val _beerImageRx = MutableLiveData<BeerView.Model>()
+    val beerImageRx: LiveData<BeerView.Model> = _beerImageRx
+
 
     fun fetchRandomBeer() {
-        randomBeerRx()
         randomBeerCo()
+        randomBeerRx()
+    }
+
+    fun fetchBeerImage() {
+        beerWithImageRx()
     }
 
     /** Random **/
@@ -60,6 +67,16 @@ class MainViewModel(key: String) : ViewModel() {
 //        _beerCo.postValue(test2)
 //
 //    }
+
+    private fun beerWithImageRx() = beerUseCase
+        .beerWithImageRx()
+        .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+        .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
+        .subscribeBy(
+            onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
+            onError = { Log.e("MainViewModel", it.message) }
+        )
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(

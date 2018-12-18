@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         observeViewModel()
-        random_button.setOnClickListener { onClickRandomBeer() }
+        setupListeners()
     }
 
     private fun observeViewModel() {
@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun onClickRandomBeer() = viewModel.fetchRandomBeer()
+    private fun setupListeners() {
+        random_button.setOnClickListener { viewModel.fetchRandomBeer() }
+    }
+
 
 }
