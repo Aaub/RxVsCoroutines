@@ -7,12 +7,10 @@ import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
-import com.alexetnico.rxvscoroutines.utils.EMPTY
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
-import java.util.concurrent.TimeUnit.SECONDS
 
 
 class MainViewModel(key: String) : ViewModel() {
@@ -41,15 +39,14 @@ class MainViewModel(key: String) : ViewModel() {
         beerWithImageCo()
     }
 
-    /** Random **/
+
+    /*********** Random ***********/
 
     private fun randomBeerCo() {
 
         GlobalScope.async(Dispatchers.Default) {
             _beerCo.postValue(beerUseCase.randomCo().await()?.toBeerViewModel())
         }
-
-
     }
 
     private fun randomBeerRx() = beerUseCase
@@ -63,16 +60,13 @@ class MainViewModel(key: String) : ViewModel() {
         )
 
 
-    /** Beer with image **/
+    /*********** Beer with image ***********/
 
     private fun beerWithImageCo() {
         GlobalScope.async(Dispatchers.Default) {
             _beerImageCo.postValue(beerUseCase.beerWithImageCo().await()?.toBeerViewModel())
         }
-
-
     }
-
 
     private fun beerWithImageRx() = beerUseCase
         .beerWithImageRx()
@@ -85,7 +79,7 @@ class MainViewModel(key: String) : ViewModel() {
         )
 
 
-    /** Calls in raw **/
+    /*********** Calls in raw ***********/
     @ObsoleteCoroutinesApi
     private fun fiveBeers() {
         GlobalScope.async(Dispatchers.Default) {
@@ -97,7 +91,6 @@ class MainViewModel(key: String) : ViewModel() {
             }
         }
     }
-
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(

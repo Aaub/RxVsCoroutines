@@ -43,10 +43,6 @@ class BeerUseCase(val key: String) {
         .flatMap { rxService.beerImage(it.id, key) }
         .map { it.beer }
 
-    fun beerWithImageRx(): Single<Beer> = randomRx()
-        .flatMap { rxService.beerImage(it.id, key) }
-        .map { it.beer }
-
     /** Calls in raw **/
 
     fun fiveBeers(): Deferred<Channel<Beer?>> =
