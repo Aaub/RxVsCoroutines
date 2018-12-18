@@ -4,12 +4,15 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.alexetnico.rxvscoroutines.model.Beer
-import com.alexetnico.rxvscoroutines.ui.MainViewModel.STATUS.*
+import com.alexetnico.rxvscoroutines.ui.MainViewModel.STATUS.LOADING
+import com.alexetnico.rxvscoroutines.ui.MainViewModel.STATUS.NOT_LOADING
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
 import com.alexetnico.rxvscoroutines.utils.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.consumeEach
 
 
@@ -23,6 +26,12 @@ class MainViewModel(key: String) : ViewModel() {
 
     private val _beerImageCo = MutableLiveData<BeerView.Model>()
     val beerImageCo: LiveData<BeerView.Model> = _beerImageCo
+
+    private val _beersCo = MutableLiveData<Collection<String>>()
+    val beersCo: LiveData<Collection<String>> = _beersCo
+
+    private val _beersStatusCo = MutableLiveData<STATUS>()
+    val beersStatusCo: LiveData<STATUS> = _beersStatusCo
 
     private val _beerRx = MutableLiveData<BeerView.Model>()
     val beerRx: LiveData<BeerView.Model> = _beerRx
@@ -49,6 +58,7 @@ class MainViewModel(key: String) : ViewModel() {
 
     fun fetchRandomBeers() {
         randomBeersRx()
+        randomBeersCo()
     }
 
 
@@ -94,15 +104,18 @@ class MainViewModel(key: String) : ViewModel() {
 
 
     /*********** Calls in raw ***********/
-    @ObsoleteCoroutinesApi
-    private fun randomBeers() {
+
+    private fun randomBeersCo() {
+        _beersStatusCo.postValue(LOADING)
+        _beersCo.postValue(emptyList())
+        beerUseCase.randomBeers(QUANTITY)
         GlobalScope.async(Dispatchers.Default) {
-            beerUseCase.randomBeers(QUANTITY).await().consumeEach {
-                delay(1000)
+            beerUseCase.channel.consumeEach {
                 it?.let {
-                    _beerCo.postValue(it.toBeerViewModel())
+                    _beersCo.postValue(_beersCo.value?.plus(it.name))
                 }
             }
+            _beersStatusCo.postValue(NOT_LOADING)
         }
     }
 

@@ -17,6 +17,8 @@ class BeerUseCase(val key: String) {
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     }
 
+    var channel: Channel<Beer?> = Channel()
+
 
     /*********** Random ***********/
 
@@ -43,13 +45,14 @@ class BeerUseCase(val key: String) {
 
     /*********** Calls in raw ***********/
 
-    fun randomBeers(quantity: Int): Deferred<Channel<Beer?>> =
+    fun randomBeers(quantity: Int) =
         GlobalScope.async(coroutineContext) {
-            val channel = Channel<Beer?>(5)
-            for (i in 1..quantity) {
+            channel = Channel(quantity)
+            repeat(quantity) {
                 channel.send(randomCo().await())
             }
-            channel
+            channel.close()
+
         }
 
     fun randomBeersRx(quantity: Long): Observable<Beer> = randomBeerRx()
