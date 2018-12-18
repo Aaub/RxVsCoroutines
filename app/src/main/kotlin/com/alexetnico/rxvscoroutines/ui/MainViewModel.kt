@@ -72,7 +72,6 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
 
-
     private fun beerWithImageRx() = beerUseCase
         .beerWithImageRx()
         .subscribeOn(Schedulers.io())
@@ -85,7 +84,6 @@ class MainViewModel(key: String) : ViewModel() {
 
 
     /** Calls in raw **/
-
     @ObsoleteCoroutinesApi
     private fun fiveBeers() {
         GlobalScope.async(Dispatchers.Default) {
@@ -97,8 +95,6 @@ class MainViewModel(key: String) : ViewModel() {
             }
         }
     }
-
-
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(

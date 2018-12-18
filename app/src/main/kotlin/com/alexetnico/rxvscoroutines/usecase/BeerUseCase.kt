@@ -40,21 +40,6 @@ class BeerUseCase(val key: String) {
         }
 
 
-    /** Calls in raw **/
-
-    fun fiveBeers(): Deferred<Channel<Beer?>> =
-        GlobalScope.async(coroutineContext) {
-            val channel = Channel<Beer?>(5)
-            for (i in 1..5) {
-                channel.send(randomCo().await())
-            }
-            channel
-        }
-
-
-
-
-
     fun beerWithImageRx(): Single<Beer> = randomRx()
         .flatMap { rxService.beerImage(it.id, key) }
         .map { it.beer }
