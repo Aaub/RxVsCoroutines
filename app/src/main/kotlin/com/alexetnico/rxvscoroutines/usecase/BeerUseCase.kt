@@ -2,6 +2,7 @@ package com.alexetnico.rxvscoroutines.usecase
 
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
+import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -16,21 +17,17 @@ class BeerUseCase(val key: String) {
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     }
 
-    /** Random **/
 
-    suspend fun randomCo(): Deferred<Beer?> =
+    /*********** Random ***********/
 
-        GlobalScope.async(Dispatchers.Main) {
-            coroutinesService.randomBeer(key).await().beer
+    suspend fun randomCo(): Deferred<Beer?> = GlobalScope.async(Dispatchers.Main) {
+        coroutinesService.randomBeer(key).await().beer
+    }
 
-        }
-
-
-
-    fun randomRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
+    fun randomBeerRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
 
 
-    /** Beer with image **/
+    /*********** Beer with image ***********/
 
     fun beerWithImageCo(): Deferred<Beer?> =
         GlobalScope.async(coroutineContext) {
@@ -39,19 +36,23 @@ class BeerUseCase(val key: String) {
             }
         }
 
-
-    fun beerWithImageRx(): Single<Beer> = randomRx()
+    fun beerWithImageRx(): Single<Beer> = randomBeerRx()
         .flatMap { rxService.beerImage(it.id, key) }
         .map { it.beer }
 
-    /** Calls in raw **/
 
-    fun fiveBeers(): Deferred<Channel<Beer?>> =
+    /*********** Calls in raw ***********/
+
+    fun randomBeers(quantity: Int): Deferred<Channel<Beer?>> =
         GlobalScope.async(coroutineContext) {
             val channel = Channel<Beer?>(5)
-            for (i in 1..5) {
+            for (i in 1..quantity) {
                 channel.send(randomCo().await())
             }
             channel
         }
+
+    fun randomBeersRx(quantity: Long): Observable<Beer> = randomBeerRx()
+        .toObservable()
+        .repeat(quantity)
 }
