@@ -8,4 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="Button">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingEnd">@dimen/padding_button</item>
+        <item name="android:paddingStart">@dimen/padding_button</item>
+        <item name="android:gravity">center</item>
+        <item name=" android:background">@drawable/button_background</item>
+    </style>
 </resources>

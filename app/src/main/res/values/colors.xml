@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">#3700B3</color>02c9b5
     <color name="colorPrimaryBackground">#1e3700b3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent_ripple">#02c9b5</color>
+
 
     <color name="grey_background">#edf0f4</color>
     <color name="dark_grey">#2d2f33</color>
