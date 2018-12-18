@@ -3,7 +3,6 @@ package com.alexetnico.rxvscoroutines.ui
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.ui.customview.BeerView
 import com.alexetnico.rxvscoroutines.usecase.BeerUseCase
@@ -28,6 +27,9 @@ class MainViewModel(key: String) : ViewModel() {
     private val _beerImageRx = MutableLiveData<BeerView.Model>()
     val beerImageRx: LiveData<BeerView.Model> = _beerImageRx
 
+    private val _beersRx = MutableLiveData<Collection<String>>()
+    val beersRx: LiveData<Collection<String>> = _beersRx
+
 
     fun fetchRandomBeer() {
         randomBeerCo()
@@ -35,8 +37,12 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
     fun fetchBeerImage() {
-        beerWithImageRx()
         beerWithImageCo()
+        beerWithImageRx()
+    }
+
+    fun fetchRandomBeers() {
+        randomBeersRx()
     }
 
 
@@ -50,13 +56,13 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
     private fun randomBeerRx() = beerUseCase
-        .randomRx()
+        .randomBeerRx()
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .doOnSubscribe { _beerRx.postValue(BeerView.Model(isLoading = true)) }
         .subscribeBy(
             onSuccess = { _beerRx.postValue(it.toBeerViewModel()) },
-            onError = { Log.e("MainViewModel", it.message) }
+            onError = { }
         )
 
 
@@ -75,7 +81,7 @@ class MainViewModel(key: String) : ViewModel() {
         .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
         .subscribeBy(
             onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
-            onError = { Log.e("MainViewModel", it.message) }
+            onError = { }
         )
 
 
@@ -91,6 +97,17 @@ class MainViewModel(key: String) : ViewModel() {
             }
         }
     }
+
+    private fun randomBeersRx() = beerUseCase
+        .randomBeersRx(QUANTITY.toLong())
+        .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+        .doOnSubscribe { _beersRx.postValue(emptyList()) }
+        .subscribeBy(
+            onNext = { _beersRx.postValue(_beersRx.value?.plus(it.name)) },
+            onComplete = { },
+            onError = { }
+        )
 
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
