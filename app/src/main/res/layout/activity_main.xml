@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey_background"
-    >
-
-    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".ui.MainActivity"
-        >
-
+        android:layout_height="match_parent"
+        android:background="@color/grey_background"
+>
+    
+    <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".ui.MainActivity"
+    >
+        
         <Button
                 android:id="@+id/random_btn"
                 style="@style/Button"
@@ -23,40 +23,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
         />
-
+        
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
-            android:id="@+id/random_beer_rx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toStartOf="@+id/random_beer_co"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/random_btn"
-            />
-
+                android:id="@+id/random_beer_rx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/random_beer_co"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/random_btn"
+        />
+        
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
-            android:id="@+id/random_beer_co"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/random_beer_rx"
-            app:layout_constraintTop_toBottomOf="@+id/random_btn"
-            />
-
-
+                android:id="@+id/random_beer_co"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/random_beer_rx"
+                app:layout_constraintTop_toBottomOf="@+id/random_btn"
+        />
+        
+        
         <View
-            android:id="@+id/first_separator"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_margin="@dimen/margin_double"
-            android:background="@color/dark_grey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/random_beer_co"
-            />
-
-
+                android:id="@+id/first_separator"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/margin_double"
+                android:background="@color/dark_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/random_beer_co"
+        />
+        
+        
         <Button
                 android:id="@+id/beer_with_image_btn"
                 style="@style/Button"
@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/first_separator"
                 android:text="@string/beer_with_image"
         />
-
+        
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
             android:id="@+id/beer_with_image_rx"
             android:layout_width="wrap_content"
@@ -77,85 +77,99 @@
             />
 
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
-            android:id="@+id/beer_with_image_co"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/beer_with_image_rx"
-            app:layout_constraintTop_toBottomOf="@+id/beer_with_image_btn"
-            />
-
+                android:id="@+id/beer_with_image_co"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/beer_with_image_rx"
+                app:layout_constraintTop_toBottomOf="@+id/beer_with_image_btn"
+        />
+        
         <View
-            android:id="@+id/second_separator"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_margin="@dimen/margin_double"
-            android:background="@color/dark_grey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/beer_with_image_rx"
-            />
+                android:id="@+id/second_separator"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_margin="@dimen/margin_double"
+                android:background="@color/dark_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/beer_with_image_rx"
+        />
+        
+        <EditText
+                android:id="@+id/beer_quantity_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_double"
+                android:layout_marginEnd="@dimen/margin_double"
+                android:layout_marginTop="@dimen/margin_double"
+                android:hint="@string/beer_quantity_hint"
+                android:inputType="number"
+                
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/second_separator"
+        />
         
         <ProgressBar
-            android:id="@+id/beers_loader_rx"
-            android:layout_width="@dimen/small_loader"
-            android:layout_height="@dimen/small_loader"
-            android:layout_marginEnd="@dimen/big"
-            app:layout_constraintTop_toTopOf="@+id/random_beers_btn"
-            app:layout_constraintBottom_toBottomOf="@+id/random_beers_btn"
-            app:layout_constraintEnd_toStartOf="@+id/random_beers_btn"
-            android:visibility="gone"
-            tools:visibility="visible"
+                android:id="@+id/beers_loader_rx"
+                android:layout_width="@dimen/small_loader"
+                android:layout_height="@dimen/small_loader"
+                android:layout_marginEnd="@dimen/big"
+                app:layout_constraintTop_toTopOf="@+id/random_beers_btn"
+                app:layout_constraintBottom_toBottomOf="@+id/random_beers_btn"
+                app:layout_constraintEnd_toStartOf="@+id/random_beers_btn"
+                android:visibility="gone"
+                tools:visibility="visible"
         />
-
+        
         <Button
-            android:id="@+id/random_beers_btn"
-            android:text="@string/random_beers"
-            style="@style/Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/second_separator"
+                android:id="@+id/random_beers_btn"
+                android:text="@string/random_beers"
+                style="@style/Button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/beer_quantity_edit_text"
             />
     
         <ProgressBar
-            android:id="@+id/beers_loader_co"
-            android:layout_width="@dimen/small_loader"
-            android:layout_height="@dimen/small_loader"
-            android:layout_marginStart="@dimen/big"
-            app:layout_constraintBottom_toBottomOf="@+id/random_beers_btn"
-            app:layout_constraintTop_toTopOf="@+id/random_beers_btn"
-            app:layout_constraintStart_toEndOf="@+id/random_beers_btn"
-            android:visibility="gone"
-            tools:visibility="visible"
+                android:id="@+id/beers_loader_co"
+                android:layout_width="@dimen/small_loader"
+                android:layout_height="@dimen/small_loader"
+                android:layout_marginStart="@dimen/big"
+                app:layout_constraintBottom_toBottomOf="@+id/random_beers_btn"
+                app:layout_constraintTop_toTopOf="@+id/random_beers_btn"
+                app:layout_constraintStart_toEndOf="@+id/random_beers_btn"
+                android:visibility="gone"
+                tools:visibility="visible"
         />
-
-        <TextView
-            android:id="@+id/random_beers_rx"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/bottom_space"
-            android:layout_marginTop="@dimen/margin_double"
-            app:layout_constraintEnd_toStartOf="@+id/random_beers_co"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/random_beers_btn"
-            tools:text="Random beers random beers Random beers random beers Random beers random beers"
-            />
-
-        <TextView
-            android:id="@+id/random_beers_co"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/bottom_space"
-            android:layout_marginTop="@dimen/margin_double"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/random_beers_rx"
-            app:layout_constraintTop_toBottomOf="@+id/random_beers_btn"
-            tools:text="Random beers random beers Random beers random beers Random beers random beers"
-            />
         
-
-
+        <TextView
+                android:id="@+id/random_beers_rx"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/bottom_space"
+                android:layout_marginTop="@dimen/margin_double"
+                app:layout_constraintEnd_toStartOf="@+id/random_beers_co"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/random_beers_btn"
+                tools:text="Random beers random beers Random beers random beers Random beers random beers"
+        />
+        
+        <TextView
+                android:id="@+id/random_beers_co"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/bottom_space"
+                android:layout_marginTop="@dimen/margin_double"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/random_beers_rx"
+                app:layout_constraintTop_toBottomOf="@+id/random_beers_btn"
+                tools:text="Random beers random beers Random beers random beers Random beers random beers"
+        />
+    
+    
     </android.support.constraint.ConstraintLayout>
 
 
