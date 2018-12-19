@@ -38,7 +38,6 @@ class BeerView @JvmOverloads constructor(
 
     private fun setupFramework(attrs: AttributeSet?) {
         context.theme.obtainStyledAttributes(attrs, R.styleable.BeerView, 0, 0).apply {
-            try {
                 top_img.setImageResource(
                     when (getInteger(R.styleable.BeerView_framework, 0)) {
                         0 -> R.drawable.ic_rx
@@ -46,9 +45,6 @@ class BeerView @JvmOverloads constructor(
                         else -> R.drawable.ic_co
                     }
                 )
-            } finally {
-                recycle()
-            }
         }
     }
 
