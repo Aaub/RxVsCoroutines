@@ -45,6 +45,8 @@ class MainViewModel(key: String) : ViewModel() {
     private val _beersStatusRx = MutableLiveData<STATUS>()
     val beersStatusRx: LiveData<STATUS> = _beersStatusRx
 
+    private var quantity: Int = 0
+
 
     fun fetchRandomBeer() {
         randomBeerCo()
@@ -108,7 +110,7 @@ class MainViewModel(key: String) : ViewModel() {
     private fun randomBeersCo() {
         _beersStatusCo.postValue(LOADING)
         _beersCo.postValue(emptyList())
-        beerUseCase.randomBeers(QUANTITY)
+        beerUseCase.randomBeers(quantity)
         GlobalScope.async(Dispatchers.Default) {
             beerUseCase.channel.consumeEach {
                 it?.let {
@@ -120,7 +122,7 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
     private fun randomBeersRx() = beerUseCase
-        .randomBeersRx(QUANTITY.toLong())
+        .randomBeersRx(quantity.toLong())
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .doOnSubscribe {
@@ -134,6 +136,9 @@ class MainViewModel(key: String) : ViewModel() {
             onError = { }
         )
 
+    fun onQuantityChanged(quantity: Int) {
+        this.quantity = quantity
+    }
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
         name = name,
@@ -141,7 +146,4 @@ class MainViewModel(key: String) : ViewModel() {
         image_url = image?.url
     )
 
-    companion object {
-        var QUANTITY: Int = 5
-    }
 }

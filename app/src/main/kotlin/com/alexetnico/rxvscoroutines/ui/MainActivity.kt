@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         beer_quantity_edit_text.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 try {
-                    MainViewModel.QUANTITY = s?.toString()?.toInt() ?: 0
+                    viewModel.onQuantityChanged(s?.toString()?.toInt() ?: 0)
                 } catch (e: Exception) {
                     Log.e("MainActivity", "NaN")
                 }
