@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BeerView">
+        <attr name="framework" format="enum">
+            <enum name="rx" value="0"/>
+            <enum name="coroutines" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>

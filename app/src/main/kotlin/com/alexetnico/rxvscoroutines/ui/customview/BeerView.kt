@@ -2,7 +2,6 @@ package com.alexetnico.rxvscoroutines.ui.customview
 
 import android.content.Context
 import android.support.constraint.ConstraintLayout
-import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.widget.ImageView
 import com.alexetnico.rxvscoroutines.R
@@ -27,7 +26,7 @@ class BeerView @JvmOverloads constructor(
     init {
         inflate(context, R.layout.beer_view, this)
         resources.getDimensionPixelSize(R.dimen.medium).let { setPadding(it, it, it, it) }
-        background = AppCompatResources.getDrawable(context, R.drawable.card_background)
+        setupFramework(attrs)
     }
 
     fun setupView(model: Model) = with(model) {
@@ -35,6 +34,22 @@ class BeerView @JvmOverloads constructor(
         beer_abv.text = "$abv%"
         beer_image.setupImage(image_url)
         beer_loader.visibility = if (isLoading) VISIBLE else GONE
+    }
+
+    private fun setupFramework(attrs: AttributeSet?) {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.BeerView, 0, 0).apply {
+            try {
+                top_img.setImageResource(
+                    when (getInteger(R.styleable.BeerView_framework, 0)) {
+                        0 -> R.drawable.ic_rx
+                        1 -> R.drawable.ic_co
+                        else -> R.drawable.ic_co
+                    }
+                )
+            } finally {
+                recycle()
+            }
+        }
     }
 
     private fun ImageView.setupImage(image_url: String?) {

@@ -22,8 +22,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
         />
         
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
@@ -34,6 +32,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/random_beer_co"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/random_btn"
+                android:background="@drawable/card_background_rx"
+                app:framework="rx"
         />
         
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
@@ -44,6 +44,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/random_beer_rx"
                 app:layout_constraintTop_toBottomOf="@+id/random_btn"
+                android:background="@drawable/card_background_co"
+                app:framework="coroutines"
         />
         
         
@@ -56,6 +58,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/random_beer_co"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
         />
         
         
@@ -87,7 +91,9 @@
             app:layout_constraintEnd_toStartOf="@+id/beer_with_image_co"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/beer_with_image_btn"
-            />
+            android:background="@drawable/card_background_rx"
+            app:framework="rx"
+        />
 
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
                 android:id="@+id/beer_with_image_co"
@@ -97,6 +103,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/beer_with_image_rx"
                 app:layout_constraintTop_toBottomOf="@+id/beer_with_image_btn"
+                android:background="@drawable/card_background_co"
+                app:framework="coroutines"
         />
         
         <View

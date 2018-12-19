@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>02c9b5
+    <color name="colorCoroutines">#f68927</color>02c9b5
     <color name="colorPrimaryBackground">#1e3700b3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#000000</color>
     <color name="colorAccent_ripple">#02c9b5</color>
 
 
