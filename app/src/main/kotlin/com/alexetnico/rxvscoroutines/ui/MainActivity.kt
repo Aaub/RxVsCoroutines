@@ -68,7 +68,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         random_btn.setOnClickListener { viewModel.fetchRandomBeer() }
-        beer_with_image_btn.setOnClickListener { viewModel.fetchBeerImage() }
+        beer_with_image_btn.setOnClickListener {
+            if(img_switch.isChecked) viewModel.fetchBeerSafeImage()
+            else viewModel.fetchBeerImage()
+        }
         random_beers_btn.setOnClickListener { viewModel.fetchRandomBeers(beer_quantity_edit_text.toInt()) }
     }
 

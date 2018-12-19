@@ -56,6 +56,10 @@ class MainViewModel(key: String) : ViewModel() {
         beerWithImageRx()
     }
 
+    fun fetchBeerSafeImage() {
+        //TODO : RETRY USE CASE
+    }
+
     fun fetchRandomBeers(quantity: Int) {
         randomBeersRx(quantity)
         randomBeersCo(quantity)

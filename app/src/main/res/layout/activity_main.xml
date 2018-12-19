@@ -68,6 +68,17 @@
                 android:text="@string/beer_with_image"
         />
         
+        <Switch
+                android:id="@+id/img_switch"
+                android:layout_marginStart="@dimen/big"
+                android:layout_width="wrap_content"
+                android:text="@string/retry_use_case"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/beer_with_image_btn"
+                app:layout_constraintTop_toTopOf="@id/beer_with_image_btn"
+                app:layout_constraintBottom_toBottomOf="@+id/beer_with_image_btn"
+        />
+        
         <com.alexetnico.rxvscoroutines.ui.customview.BeerView
             android:id="@+id/beer_with_image_rx"
             android:layout_width="wrap_content"
@@ -169,8 +180,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/random_beers_btn"
                 tools:text="Random beers random beers Random beers random beers Random beers random beers"
         />
-    
-    
+        
+
+
     </android.support.constraint.ConstraintLayout>
 
 
