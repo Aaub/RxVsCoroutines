@@ -45,8 +45,6 @@ class MainViewModel(key: String) : ViewModel() {
     private val _beersStatusRx = MutableLiveData<STATUS>()
     val beersStatusRx: LiveData<STATUS> = _beersStatusRx
 
-    private var quantity: Int = 0
-
 
     fun fetchRandomBeer() {
         randomBeerCo()
@@ -58,9 +56,9 @@ class MainViewModel(key: String) : ViewModel() {
         beerWithImageRx()
     }
 
-    fun fetchRandomBeers() {
-        randomBeersRx()
-        randomBeersCo()
+    fun fetchRandomBeers(quantity: Int) {
+        randomBeersRx(quantity)
+        randomBeersCo(quantity)
     }
 
 
@@ -107,7 +105,7 @@ class MainViewModel(key: String) : ViewModel() {
 
     /*********** Calls in raw ***********/
 
-    private fun randomBeersCo() {
+    private fun randomBeersCo(quantity: Int) {
         _beersStatusCo.postValue(LOADING)
         _beersCo.postValue(emptyList())
         beerUseCase.randomBeers(quantity)
@@ -121,7 +119,7 @@ class MainViewModel(key: String) : ViewModel() {
         }
     }
 
-    private fun randomBeersRx() = beerUseCase
+    private fun randomBeersRx(quantity: Int) = beerUseCase
         .randomBeersRx(quantity.toLong())
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
@@ -135,10 +133,6 @@ class MainViewModel(key: String) : ViewModel() {
             onComplete = { },
             onError = { }
         )
-
-    fun onQuantityChanged(quantity: Int) {
-        this.quantity = quantity
-    }
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
         name = name,
