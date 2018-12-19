@@ -113,7 +113,7 @@ class MainViewModel(key: String) : ViewModel() {
     private fun randomBeersCo(quantity: Int) {
         _beersStatusCo.postValue(LOADING)
         _beersCo.postValue(emptyList())
-        beerUseCase.randomBeers(quantity)
+        beerUseCase.randomBeersCo(quantity)
         GlobalScope.async(Dispatchers.Default) {
             beerUseCase.channel.consumeEach {
                 it?.let {
@@ -141,7 +141,7 @@ class MainViewModel(key: String) : ViewModel() {
 
 
 
-    /***********  RETRY  ***********/
+    /***********  RECURSIVE  ***********/
 
     private fun beerWithSafeImageRx() = beerUseCase
         .beerWithSafeImageRx()

@@ -26,6 +26,11 @@ class BeerUseCase(val key: String) {
         coroutinesService.randomBeer(key).await().beer
     }
 
+    suspend fun randomCoBis(): Beer = GlobalScope.async(Dispatchers.Main) {
+        coroutinesService.randomBeer(key).await().beer
+    }.await()
+
+
     fun randomBeerRx(): Single<Beer> = rxService.randomBeer(key).map { it.beer }
 
 
@@ -36,6 +41,10 @@ class BeerUseCase(val key: String) {
             coroutinesService.beerImage(randomCo().await().id, key).await().beer
         }
 
+    suspend fun beerWithImageCoBis(): Beer =
+        coroutinesService.beerImage(randomCoBis().id, key).await().beer
+
+
     fun beerWithImageRx(): Single<Beer> = randomBeerRx()
         .flatMap { rxService.beerImage(it.id, key) }
         .map { it.beer }
@@ -43,39 +52,20 @@ class BeerUseCase(val key: String) {
 
     /*********** Calls in raw ***********/
 
-    fun randomBeers(quantity: Int) =
-        GlobalScope.async(coroutineContext) {
-            channel = Channel(quantity)
-            repeat(quantity) {
-                channel.send(randomCo().await())
-            }
-            channel.close()
-
+    fun randomBeersCo(quantity: Int) = GlobalScope.async(coroutineContext) {
+        channel = Channel(quantity)
+        repeat(quantity) {
+            channel.send(randomCo().await())
         }
+        channel.close()
+    }
 
     fun randomBeersRx(quantity: Long): Observable<Beer> = randomBeerRx()
         .toObservable()
         .repeat(quantity)
 
 
-    /***********  RETRY  ***********/
-
-    fun beerWithSafeImageRx(): Single<Beer> = beerWithImageRx()
-        .flatMap { beer ->
-            beer.image?.url?.let {
-                if (it.isBlank()) beerWithSafeImageRx()
-                else Single.just(beer)
-            }
-        }
-
-
-    suspend fun randomCoBis(): Beer = GlobalScope.async(Dispatchers.Main) {
-        coroutinesService.randomBeer(key).await().beer
-    }.await()
-
-    suspend fun beerWithImageCoBis(): Beer =
-        coroutinesService.beerImage(randomCoBis().id, key).await().beer
-
+    /***********  RECURSIVE  ***********/
 
     suspend fun beerWithSafeImageCo(): Beer {
         val beer = beerWithImageCoBis()
@@ -84,4 +74,11 @@ class BeerUseCase(val key: String) {
             false -> beer
         }
     }
+
+    fun beerWithSafeImageRx(): Single<Beer> = beerWithImageRx()
+        .flatMap { beer ->
+            if (beer.image?.url.isNullOrBlank()) beerWithSafeImageRx()
+            else Single.just(beer)
+        }
+
 }
