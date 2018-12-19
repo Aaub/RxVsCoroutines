@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.beersCo.observe(this, Observer {
             it?.let { random_beers_co.text = it.toBeersString() }
         })
+
         viewModel.beersRx.observe(this, Observer {
             it?.let { random_beers_rx.text = it.toBeersString() }
         })
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 NOT_LOADING, null -> INVISIBLE
             }
         })
+
         viewModel.beersStatusRx.observe(this, Observer {
             beers_loader_rx.visibility = when (it) {
                 LOADING -> VISIBLE

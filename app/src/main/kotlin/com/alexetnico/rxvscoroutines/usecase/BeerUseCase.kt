@@ -58,4 +58,15 @@ class BeerUseCase(val key: String) {
     fun randomBeersRx(quantity: Long): Observable<Beer> = randomBeerRx()
         .toObservable()
         .repeat(quantity)
+
+
+    /***********  RETRY  ***********/
+
+    fun beerWithSafeImageRx(): Single<Beer> = beerWithImageRx()
+        .flatMap { beer ->
+            beer.image?.url?.let {
+                if (it.isBlank()) beerWithSafeImageRx()
+                else Single.just(beer)
+            }
+        }
 }

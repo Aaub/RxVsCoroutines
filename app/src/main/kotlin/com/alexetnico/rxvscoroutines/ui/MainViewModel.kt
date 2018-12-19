@@ -57,7 +57,7 @@ class MainViewModel(key: String) : ViewModel() {
     }
 
     fun fetchBeerSafeImage() {
-        //TODO : RETRY USE CASE
+        beerWithSafeImageRx()
     }
 
     fun fetchRandomBeers(quantity: Int) {
@@ -137,6 +137,22 @@ class MainViewModel(key: String) : ViewModel() {
             onComplete = { },
             onError = { }
         )
+
+
+
+    /***********  RETRY  ***********/
+
+    private fun beerWithSafeImageRx() = beerUseCase
+        .beerWithSafeImageRx()
+        .subscribeOn(Schedulers.io())
+        .observeOn(Schedulers.io())
+        .doOnSubscribe { _beerImageRx.postValue(BeerView.Model(isLoading = true)) }
+        .subscribeBy(
+            onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
+            onError = { }
+        )
+
+
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
         name = name,
