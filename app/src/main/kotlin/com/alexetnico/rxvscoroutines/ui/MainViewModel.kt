@@ -58,6 +58,7 @@ class MainViewModel(key: String) : ViewModel() {
 
     fun fetchBeerSafeImage() {
         beerWithSafeImageRx()
+        beerWithSafeImageCo()
     }
 
     fun fetchRandomBeers(quantity: Int) {
@@ -92,7 +93,7 @@ class MainViewModel(key: String) : ViewModel() {
     private fun beerWithImageCo() {
         GlobalScope.async(Dispatchers.Default) {
             _beerImageCo.postValue(BeerView.Model(isLoading = true))
-            _beerImageCo.postValue(beerUseCase.beerWithImageCo().await()?.toBeerViewModel())
+            _beerImageCo.postValue(beerUseCase.beerWithImageCo().await().toBeerViewModel())
         }
     }
 
@@ -151,6 +152,11 @@ class MainViewModel(key: String) : ViewModel() {
             onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
             onError = { }
         )
+
+    private fun beerWithSafeImageCo() = GlobalScope.async {
+        _beerImageCo.postValue(BeerView.Model(isLoading = true))
+        _beerImageCo.postValue(beerUseCase.beerWithSafeImageCo().toBeerViewModel())
+    }
 
 
 

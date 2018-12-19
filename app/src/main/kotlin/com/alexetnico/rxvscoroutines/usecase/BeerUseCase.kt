@@ -22,7 +22,7 @@ class BeerUseCase(val key: String) {
 
     /*********** Random ***********/
 
-    suspend fun randomCo(): Deferred<Beer?> = GlobalScope.async(Dispatchers.Main) {
+    suspend fun randomCo(): Deferred<Beer> = GlobalScope.async(Dispatchers.Main) {
         coroutinesService.randomBeer(key).await().beer
     }
 
@@ -31,11 +31,9 @@ class BeerUseCase(val key: String) {
 
     /*********** Beer with image ***********/
 
-    fun beerWithImageCo(): Deferred<Beer?> =
+    fun beerWithImageCo(): Deferred<Beer> =
         GlobalScope.async(coroutineContext) {
-            randomCo().await()?.let {
-                coroutinesService.beerImage(it.id, key).await().beer
-            }
+            coroutinesService.beerImage(randomCo().await().id, key).await().beer
         }
 
     fun beerWithImageRx(): Single<Beer> = randomBeerRx()
@@ -69,4 +67,21 @@ class BeerUseCase(val key: String) {
                 else Single.just(beer)
             }
         }
+
+
+    suspend fun randomCoBis(): Beer = GlobalScope.async(Dispatchers.Main) {
+        coroutinesService.randomBeer(key).await().beer
+    }.await()
+
+    suspend fun beerWithImageCoBis(): Beer =
+        coroutinesService.beerImage(randomCoBis().id, key).await().beer
+
+
+    suspend fun beerWithSafeImageCo(): Beer {
+        val beer = beerWithImageCoBis()
+        return when (beer.image?.url.isNullOrBlank()) {
+            true -> beerWithSafeImageCo()
+            false -> beer
+        }
+    }
 }
