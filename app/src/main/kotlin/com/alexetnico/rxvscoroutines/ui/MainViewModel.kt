@@ -73,7 +73,7 @@ class MainViewModel(key: String) : ViewModel() {
 
         GlobalScope.async(Dispatchers.Default) {
             _beerCo.postValue(BeerView.Model(isLoading = true))
-            _beerCo.postValue(beerUseCase.randomBeerCo().await()?.toBeerViewModel())
+            _beerCo.postValue(beerUseCase.randomBeerCo().toBeerViewModel())
         }
     }
 
@@ -93,7 +93,7 @@ class MainViewModel(key: String) : ViewModel() {
     private fun beerWithImageCo() {
         GlobalScope.async(Dispatchers.Default) {
             _beerImageCo.postValue(BeerView.Model(isLoading = true))
-            _beerImageCo.postValue(beerUseCase.beerWithImageCo().await().toBeerViewModel())
+            _beerImageCo.postValue(beerUseCase.beerWithImageCo().toBeerViewModel())
         }
     }
 

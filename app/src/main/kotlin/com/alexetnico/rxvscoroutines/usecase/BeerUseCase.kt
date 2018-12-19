@@ -22,11 +22,7 @@ class BeerUseCase(val key: String) {
 
     /*********** Random ***********/
 
-    suspend fun randomBeerCo(): Deferred<Beer> = GlobalScope.async(Dispatchers.Main) {
-        coroutinesService.randomBeer(key).await().beer
-    }
-
-    suspend fun randomCoBis(): Beer = GlobalScope.async(Dispatchers.Main) {
+    suspend fun randomBeerCo(): Beer = GlobalScope.async(Dispatchers.Main) {
         coroutinesService.randomBeer(key).await().beer
     }.await()
 
@@ -36,13 +32,8 @@ class BeerUseCase(val key: String) {
 
     /*********** Beer with image ***********/
 
-    fun beerWithImageCo(): Deferred<Beer> =
-        GlobalScope.async(coroutineContext) {
-            coroutinesService.beerImage(randomBeerCo().await().id, key).await().beer
-        }
-
-    suspend fun beerWithImageCoBis(): Beer =
-        coroutinesService.beerImage(randomCoBis().id, key).await().beer
+    suspend fun beerWithImageCo(): Beer =
+        coroutinesService.beerImage(randomBeerCo().id, key).await().beer
 
 
     fun beerWithImageRx(): Single<Beer> = randomBeerRx()
@@ -55,7 +46,7 @@ class BeerUseCase(val key: String) {
     fun randomBeersCo(quantity: Int) = GlobalScope.async(coroutineContext) {
         channel = Channel(quantity)
         repeat(quantity) {
-            channel.send(randomBeerCo().await())
+            channel.send(randomBeerCo())
         }
         channel.close()
     }
@@ -68,7 +59,7 @@ class BeerUseCase(val key: String) {
     /***********  RECURSIVE  ***********/
 
     suspend fun beerWithSafeImageCo(): Beer {
-        val beer = beerWithImageCoBis()
+        val beer = beerWithImageCo()
         return when (beer.image?.url.isNullOrBlank()) {
             true -> beerWithSafeImageCo()
             false -> beer
