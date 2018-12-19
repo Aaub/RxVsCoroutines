@@ -71,15 +71,17 @@ class MainActivity : AppCompatActivity() {
     private fun setupListeners() {
         random_btn.setOnClickListener { viewModel.fetchRandomBeer() }
         beer_with_image_btn.setOnClickListener {
-            if(img_switch.isChecked) viewModel.fetchBeerSafeImage()
+            if (img_switch.isChecked) viewModel.fetchBeerSafeImage()
             else viewModel.fetchBeerImage()
         }
         random_beers_btn.setOnClickListener { viewModel.fetchRandomBeers(beer_quantity_edit_text.toInt()) }
     }
 
-    private fun EditText.toInt() = text.toString().let {
-        if(it.isBlank()) COUNT
-        else it.toInt()
+    private fun EditText.toInt(): Int = text.toString().let {
+        if (it.isBlank()) {
+            setText("$COUNT")
+            toInt()
+        } else it.toInt()
     }
 
     companion object {
