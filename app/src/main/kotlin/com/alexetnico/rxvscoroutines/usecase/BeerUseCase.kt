@@ -22,7 +22,7 @@ class BeerUseCase(val key: String) {
 
     /*********** Random ***********/
 
-    suspend fun randomCo(): Deferred<Beer> = GlobalScope.async(Dispatchers.Main) {
+    suspend fun randomBeerCo(): Deferred<Beer> = GlobalScope.async(Dispatchers.Main) {
         coroutinesService.randomBeer(key).await().beer
     }
 
@@ -38,7 +38,7 @@ class BeerUseCase(val key: String) {
 
     fun beerWithImageCo(): Deferred<Beer> =
         GlobalScope.async(coroutineContext) {
-            coroutinesService.beerImage(randomCo().await().id, key).await().beer
+            coroutinesService.beerImage(randomBeerCo().await().id, key).await().beer
         }
 
     suspend fun beerWithImageCoBis(): Beer =
@@ -55,7 +55,7 @@ class BeerUseCase(val key: String) {
     fun randomBeersCo(quantity: Int) = GlobalScope.async(coroutineContext) {
         channel = Channel(quantity)
         repeat(quantity) {
-            channel.send(randomCo().await())
+            channel.send(randomBeerCo().await())
         }
         channel.close()
     }
