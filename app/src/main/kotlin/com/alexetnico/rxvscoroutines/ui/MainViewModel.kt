@@ -128,6 +128,11 @@ class MainViewModel(key: String) : ViewModel() {
         .randomBeersRx(quantity.toLong())
         .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
+        .doOnSubscribe {
+            _beersRx.postValue(emptyList())
+            _beersStatusRx.postValue(LOADING)
+        }
+        .doFinally { _beersStatusRx.postValue(NOT_LOADING) }
         .subscribeBy(
             onNext = { _beersRx.postValue(_beersRx.value?.plus(it.name)) },
             onComplete = { },
@@ -136,6 +141,11 @@ class MainViewModel(key: String) : ViewModel() {
 
 
     /***********  RECURSIVE  ***********/
+
+    private fun beerWithSafeImageCo() = GlobalScope.async {
+        _beerImageCo.postValue(BeerView.Model(isLoading = true))
+        _beerImageCo.postValue(beerUseCase.beerWithSafeImageCo().toBeerViewModel())
+    }
 
     private fun beerWithSafeImageRx() = beerUseCase
         .beerWithSafeImageRx()
@@ -146,12 +156,6 @@ class MainViewModel(key: String) : ViewModel() {
             onSuccess = { _beerImageRx.postValue(it.toBeerViewModel()) },
             onError = { }
         )
-
-    private fun beerWithSafeImageCo() = GlobalScope.async {
-        _beerImageCo.postValue(BeerView.Model(isLoading = true))
-        _beerImageCo.postValue(beerUseCase.beerWithSafeImageCo().toBeerViewModel())
-    }
-
 
     private fun Beer.toBeerViewModel() = BeerView.Model(
         name = name,
