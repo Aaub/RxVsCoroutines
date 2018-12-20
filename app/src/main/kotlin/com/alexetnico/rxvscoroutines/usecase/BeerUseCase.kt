@@ -4,25 +4,29 @@ import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
 import io.reactivex.Observable
 import io.reactivex.Single
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
-import java.util.concurrent.Executors
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class BeerUseCase(val key: String) {
     private val rxService by lazy { BreweryApiServiceFactory.createRxService() }
 
     private val coroutinesService by lazy { BreweryApiServiceFactory.createCoroutinesService() }
 
-    val coroutineContext: ExecutorCoroutineDispatcher by lazy {
-        Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-    }
 
     var channel: Channel<Beer?> = Channel()
 
 
     /*********** Random ***********/
 
-    suspend fun randomBeerCo(): Beer = GlobalScope.async(Dispatchers.Main) {
+    suspend fun randomBeerCo(coroutineContext: CoroutineContext): Beer = GlobalScope.async(coroutineContext) {
+        //        while (isActive){
+//            delay(100)
+//            Log.d("ESSAI : ", "isActive = $isActive")
+//        }
         coroutinesService.randomBeer(key).await().beer
     }.await()
 
@@ -32,8 +36,10 @@ class BeerUseCase(val key: String) {
 
     /*********** Beer with image ***********/
 
-    suspend fun beerWithImageCo(): Beer =
-        coroutinesService.beerImage(randomBeerCo().id, key).await().beer
+    suspend fun beerWithImageCo(coroutineContext: CoroutineContext): Beer =
+        withContext(coroutineContext) {
+            coroutinesService.beerImage(randomBeerCo(coroutineContext).id, key).await().beer
+        }
 
 
     fun beerWithImageRx(): Single<Beer> = randomBeerRx()
@@ -43,10 +49,14 @@ class BeerUseCase(val key: String) {
 
     /*********** Calls in raw ***********/
 
-    fun randomBeersCo(quantity: Int) = GlobalScope.async(coroutineContext) {
+    fun randomBeersCo(
+        quantity: Int,
+        coroutineContext: CoroutineContext,
+        coroutineScope: CoroutineScope
+    ) = coroutineScope.async(coroutineContext) {
         channel = Channel(quantity)
         repeat(quantity) {
-            channel.send(randomBeerCo())
+            channel.send(randomBeerCo(coroutineContext))
         }
         channel.close()
     }
@@ -58,11 +68,13 @@ class BeerUseCase(val key: String) {
 
     /***********  RECURSIVE  ***********/
 
-    suspend fun beerWithSafeImageCo(): Beer {
-        val beer = beerWithImageCo()
-        return when (beer.image?.url.isNullOrBlank()) {
-            true -> beerWithSafeImageCo()
-            false -> beer
+    suspend fun beerWithSafeImageCo(coroutineContext: CoroutineContext): Beer {
+        return withContext(coroutineContext) {
+            val beer = beerWithImageCo(coroutineContext)
+            return@withContext when (beer.image?.url.isNullOrBlank()) {
+                true -> beerWithSafeImageCo(coroutineContext)
+                false -> beer
+            }
         }
     }
 
