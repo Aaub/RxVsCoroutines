@@ -68,15 +68,13 @@ class BeerUseCase(val key: String) {
 
     /***********  RECURSIVE  ***********/
 
-    suspend fun beerWithSafeImageCo(coroutineContext: CoroutineContext): Beer {
-        return withContext(coroutineContext) {
-            val beer = beerWithImageCo(coroutineContext)
-            return@withContext when (beer.image?.url.isNullOrBlank()) {
-                true -> beerWithSafeImageCo(coroutineContext)
-                false -> beer
+    suspend fun beerWithSafeImageCo(coroutineContext: CoroutineContext): Beer =
+        withContext(coroutineContext) {
+            beerWithImageCo(coroutineContext).let {
+                if (it.image?.url.isNullOrBlank()) beerWithSafeImageCo(coroutineContext)
+                else it
             }
         }
-    }
 
     fun beerWithSafeImageRx(): Single<Beer> = beerWithImageRx()
         .flatMap { beer ->
