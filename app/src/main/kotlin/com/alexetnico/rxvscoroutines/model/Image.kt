@@ -1,7 +1,8 @@
 package com.alexetnico.rxvscoroutines.model
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Image(
-    val url: String
+    @SerializedName("medium") val url: String
 ) : Serializable
