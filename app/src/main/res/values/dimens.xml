@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="medium">10dp</dimen>
+    <dimen name="big">20dp</dimen>
+    <dimen name="fat">50dp</dimen>
+    <dimen name="margin_double">12dp</dimen>
+    <dimen name="padding_button">5dp</dimen>
+    <dimen name="bottom_space">250dp</dimen>
+    <dimen name="small_loader">30dp</dimen>
+</resources>

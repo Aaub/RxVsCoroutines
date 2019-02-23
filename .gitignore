@@ -8,4 +8,6 @@
 .DS_Store
 /build
 /captures
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/misc.xml
 .externalNativeBuild
