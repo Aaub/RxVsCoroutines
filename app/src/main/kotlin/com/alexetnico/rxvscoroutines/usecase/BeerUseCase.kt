@@ -1,20 +1,18 @@
 package com.alexetnico.rxvscoroutines.usecase
 
+import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
 import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 
 class BeerUseCase(val key: String) {
     private val rxService by lazy { BreweryApiServiceFactory.createRxService() }
-
     private val coroutinesService by lazy { BreweryApiServiceFactory.createCoroutinesService() }
-
-
-    var channel: Channel<Beer?> = Channel()
 
 
     /*********** Random ***********/
@@ -37,15 +35,14 @@ class BeerUseCase(val key: String) {
 
     /*********** Calls in raw ***********/
 
-    suspend fun randomBeersCo(
-        quantity: Int,
-        coroutineScope: CoroutineScope
-    ) = coroutineScope.async {
-        channel = Channel(quantity)
-        repeat(quantity) {
-            channel.send(randomBeerCo())
+    suspend fun randomBeersCo(quantity: Int) = Channel<Beer?>(quantity).apply {
+        CoroutineScope(Dispatchers.Default).launch {
+            repeat(quantity) {
+                send(randomBeerCo())
+                Log.d("BeerUseCase", "$it je ne me suis pas arrêté salope !!!")
+            }
+            close()
         }
-        channel.close()
     }
 
     fun randomBeersRx(quantity: Long): Observable<Beer> = randomBeerRx()

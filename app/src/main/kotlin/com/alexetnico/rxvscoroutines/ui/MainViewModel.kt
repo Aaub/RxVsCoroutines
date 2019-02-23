@@ -69,13 +69,11 @@ class MainViewModel(key: String) : BaseViewModel() {
 
     /*********** Random ***********/
 
-    private fun randomBeerCo() {
-
-        launch {
-            _beerCo.postValue(BeerView.Model(isLoading = true))
-            _beerCo.postValue(beerUseCase.randomBeerCo().toBeerViewModel())
-        }
+    private fun randomBeerCo() = launch {
+        _beerCo.postValue(BeerView.Model(isLoading = true))
+        _beerCo.postValue(beerUseCase.randomBeerCo().toBeerViewModel())
     }
+
 
     private fun randomBeerRx() = beerUseCase
         .randomBeerRx()
@@ -90,12 +88,11 @@ class MainViewModel(key: String) : BaseViewModel() {
 
     /*********** Beer with image ***********/
 
-    private fun beerWithImageCo() {
-        launch {
-            _beerImageCo.postValue(BeerView.Model(isLoading = true))
-            _beerImageCo.postValue(beerUseCase.beerWithImageCo().toBeerViewModel())
-        }
+    private fun beerWithImageCo() = launch {
+        _beerImageCo.postValue(BeerView.Model(isLoading = true))
+        _beerImageCo.postValue(beerUseCase.beerWithImageCo().toBeerViewModel())
     }
+
 
     private fun beerWithImageRx() = beerUseCase
         .beerWithImageRx()
@@ -114,8 +111,7 @@ class MainViewModel(key: String) : BaseViewModel() {
         _beersStatusCo.postValue(LOADING)
         _beersCo.postValue(emptyList())
         launch {
-            beerUseCase.randomBeersCo(quantity, this)
-            beerUseCase.channel.consumeEach {
+            beerUseCase.randomBeersCo(quantity).consumeEach {
                 it?.let {
                     _beersCo.postValue(_beersCo.value?.plus(it.name))
                 }
