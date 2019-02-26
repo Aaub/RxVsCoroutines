@@ -1,6 +1,5 @@
 package com.alexetnico.rxvscoroutines.usecase
 
-import android.util.Log
 import com.alexetnico.rxvscoroutines.model.Beer
 import com.alexetnico.rxvscoroutines.repo.BreweryApiServiceFactory
 import io.reactivex.Observable
@@ -39,7 +38,6 @@ class BeerUseCase(val key: String) {
         CoroutineScope(Dispatchers.Default).launch {
             repeat(quantity) {
                 send(randomBeerCo())
-                Log.d("BeerUseCase", "$it je ne me suis pas arrêté salope !!!")
             }
             close()
         }

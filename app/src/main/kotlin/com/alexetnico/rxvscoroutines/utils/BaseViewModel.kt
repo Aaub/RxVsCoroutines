@@ -9,7 +9,7 @@ import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel : ViewModel(), CoroutineScope {
     final override val coroutineContext: CoroutineContext = Dispatchers.IO
-    val coroutineScope = coroutineContext + Job()
+    private val coroutineScope = coroutineContext + Job()
 
     override fun onCleared() {
         super.onCleared()
